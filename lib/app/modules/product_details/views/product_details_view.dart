@@ -73,18 +73,6 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                           duration: 1000.ms,
                           curve: Curves.fastOutSlowIn,
                         ),
-                    // child: CircleAvatar(
-                    //   backgroundImage: NetworkImage(
-                    //       "https://sabify.sabsoft.com.pk/api/website/image/${controller.product.image}/prod"),
-                    // ).animate().fade().scale(
-                    //       duration: 1000.ms,
-                    //       curve: Curves.fastOutSlowIn,
-                    //     ),
-                    // child: SvgPicture.asset(
-                    //   Constants.container,
-                    //   fit: BoxFit.fill,
-                    //   color: theme.cardColor,
-                    // ),
                   ),
                   Positioned(
                     top: 24.h,
@@ -102,37 +90,15 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                             color: theme.appBarTheme.iconTheme?.color,
                           ),
                         ),
-                        // CustomIconButton(
-                        //   onPressed: () {},
-                        //   backgroundColor: theme.scaffoldBackgroundColor,
-                        //   icon: SvgPicture.asset(
-                        //     Constants.searchIcon,
-                        //     fit: BoxFit.none,
-                        //     color: theme.appBarTheme.iconTheme?.color,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
-                  // Positioned(
-                  //   top: 80.h,
-                  //   left: 0,
-                  //   right: 0,
-                  //   child: Image.network(
-                  //     "https://sabify.sabsoft.com.pk/api/website/image/${controller.product.image}/prod",
-                  //     width: 250.w,
-                  //     height: 225.h,
-                  //   ).animate().fade().scale(
-                  //         duration: 800.ms,
-                  //         curve: Curves.fastOutSlowIn,
-                  //       ),
-                  // ),
                 ],
               ),
             ),
             30.verticalSpace,
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              padding: EdgeInsets.symmetric(horizontal: 15.w),
               child: Text(
                 controller.product.name ?? '',
                 style: theme.textTheme.displayMedium,
@@ -144,7 +110,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
             ),
             8.verticalSpace,
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              padding: EdgeInsets.symmetric(horizontal: 15.w),
               child: Row(
                 children: [
                   Text(
@@ -166,7 +132,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
             ),
             8.verticalSpace,
             Padding(
-              padding: EdgeInsets.only(left: 24.w, top: 0),
+              padding: EdgeInsets.only(left: 15.w, top: 0),
               child: Text(
                 controller.product.description ?? 'No Description',
                 style: theme.textTheme.bodyLarge,
@@ -177,88 +143,62 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                   ),
             ),
             10.verticalSpace,
-            Obx(
-              () => controller.variations.isNotEmpty
-                  ? Padding(
-                      padding: EdgeInsets.only(left: 24.w, top: 0),
-                      child: Text(
-                        'Choose Your Preference',
-                        style: theme.textTheme.displayLarge,
-                      ).animate().fade().slideX(
-                            duration: 300.ms,
-                            begin: -1,
-                            curve: Curves.easeInSine,
-                          ),
-                    )
-                  : const Center(),
-            ),
-            Obx(
-              () => controller.variations.isNotEmpty
-                  ? Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.w),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 60.h,
-                        child: ListView(
-                          addAutomaticKeepAlives: true,
-                          children: <Widget>[
-                            // ChipsChoice<int>.single(
-                            //   value: controller.tag.value,
-                            //   onChanged: (val) =>
-                            //       {controller.getSelectionChange(val)},
-                            //   choiceItems: C2Choice.listFrom<int, String>(
-                            //     source: controller.variations,
-                            //     value: (i, v) => i,
-                            //     label: (i, v) => v,
-                            //     tooltip: (i, v) => v,
-                            //   ),
-                            //   choiceCheckmark: true,
-                            //   choiceStyle: C2ChipStyle.filled(
-                            //     // color: theme.primaryColor,
-                            //     padding: const EdgeInsets.all(5),
-                            //     foregroundStyle: const TextStyle(fontSize: 17),
-                            //     selectedStyle: C2ChipStyle(
-                            //       borderRadius: const BorderRadius.all(
-                            //         Radius.circular(25),
-                            //       ),
-                            //       backgroundColor: theme.primaryColor,
-                            //       // borderColor: theme.primaryColor,
-                            //       // foregroundColor: theme.primaryColor,
-                            //     ),
-                            //   ),
-                            // ),
-                            ChipsChoice<dynamic>.single(
-                              value: controller.tag.value,
-                              onChanged: (val) =>
-                                  {controller.getSelectionChange(val)},
-                              choiceItems: C2Choice.listFrom<int, dynamic>(
-                                source: controller.variations,
-                                value: (i, v) => v['id'],
-                                label: (i, v) => v['name'],
-                                tooltip: (i, v) => v['name'],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Obx(
+                  () => controller.variations.isNotEmpty
+                      ? Padding(
+                          padding: EdgeInsets.only(left: 15.w, top: 0),
+                          child: Text(
+                            'Choose Your Preference',
+                            style: theme.textTheme.displaySmall,
+                          ).animate().fade().slideX(
+                                duration: 300.ms,
+                                begin: -1,
+                                curve: Curves.easeInSine,
                               ),
-                              choiceCheckmark: true,
-                              choiceStyle: C2ChipStyle.filled(
-                                // color: theme.primaryColor,
-                                padding: const EdgeInsets.all(5),
-                                foregroundStyle: const TextStyle(fontSize: 17),
-                                selectedStyle: C2ChipStyle(
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(25),
-                                  ),
-                                  backgroundColor: theme.primaryColor,
-                                  // borderColor: theme.primaryColor,
-                                  // foregroundColor: theme.primaryColor,
+                        )
+                      : const Center(),
+                ),
+                // 10.verticalSpace,
+                Obx(
+                  () => controller.variations.isNotEmpty
+                      ? Padding(
+                          padding: EdgeInsets.only(left: 0.w, right: 15.w),
+                          child: ChipsChoice<dynamic>.single(
+                            value: controller.tag.value,
+                            onChanged: (val) =>
+                                {controller.getSelectionChange(val)},
+                            choiceItems: C2Choice.listFrom<int, dynamic>(
+                              source: controller.variations,
+                              value: (i, v) => v['id'],
+                              label: (i, v) => v['name'],
+                              tooltip: (i, v) => v['name'],
+                            ),
+                            choiceCheckmark: true,
+                            choiceStyle: C2ChipStyle.filled(
+                              height: 45,
+                              padding: const EdgeInsets.all(10),
+                              foregroundStyle: const TextStyle(fontSize: 17),
+                              selectedStyle: C2ChipStyle(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(30),
                                 ),
+                                backgroundColor: theme.primaryColor,
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    )
-                  : const Center(),
+                          ),
+                        )
+                      : const Center(),
+                ),
+                const Divider(
+                  indent: 15,
+                  endIndent: 15,
+                  // color: Colors.transparent,
+                ),
+              ],
             ),
-            // 10.verticalSpace,
             SubVariation(controller: controller),
 
             Padding(
@@ -276,7 +216,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                     curve: Curves.easeInSine,
                   ),
             ),
-            // 30.verticalSpace,
+            30.verticalSpace,
             // Padding(
             //   padding: EdgeInsets.symmetric(horizontal: 24.w),
             //   child: SizedBox(

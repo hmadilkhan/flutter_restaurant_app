@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:grocery_app/config/theme/my_fonts.dart';
 
 import '../../../../utils/constants.dart';
 import '../../../components/custom_button.dart';
@@ -21,7 +22,7 @@ class WelcomeView extends GetView<WelcomeController> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              isLightTheme ? Constants.background : Constants.backgroundDark,
+              isLightTheme ? Constants.newBackground : Constants.backgroundDark,
               fit: BoxFit.fill,
             ),
           ),
@@ -36,34 +37,38 @@ class WelcomeView extends GetView<WelcomeController> {
                   backgroundColor: theme.primaryColorDark,
                   child: Image.asset(
                     Constants.logo,
-                    width: 40.33.w, height: 33.40.h,
+                    width: 40.33.w,
+                    height: 33.40.h,
                   ),
                 ).animate().fade().slideY(
-                  duration: 300.ms,
-                  begin: -1,
-                  curve: Curves.easeInSine,
-                ),
+                      duration: 300.ms,
+                      begin: -1,
+                      curve: Curves.easeInSine,
+                    ),
                 30.verticalSpace,
                 Text(
-                  'Get your groceries delivered to your home',
-                  style: theme.textTheme.headline1,
+                  'Get your food delivered to your home',
+                  style: theme.textTheme.displayLarge,
                   textAlign: TextAlign.center,
                 ).animate().fade().slideY(
-                  duration: 300.ms,
-                  begin: -1,
-                  curve: Curves.easeInSine,
-                ),
+                      duration: 300.ms,
+                      begin: -1,
+                      curve: Curves.easeInSine,
+                    ),
                 24.verticalSpace,
                 Text(
-                  'The best delivery app in town for delivering your daily fresh groceries',
-                  style: theme.textTheme.bodyText1,
+                  'The best deliverey app in town for delivering your daily fresh groceries',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: MyFonts.body1TextSize,
+                      color: theme.scaffoldBackgroundColor),
                   textAlign: TextAlign.center,
                 ).animate().fade().slideY(
-                  duration: 300.ms,
-                  begin: 1,
-                  curve: Curves.easeInSine,
-                ),
-                40.verticalSpace,
+                      duration: 300.ms,
+                      begin: 1,
+                      curve: Curves.easeInSine,
+                    ),
+                25.verticalSpace,
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 70.w),
                   child: CustomButton(
@@ -73,11 +78,14 @@ class WelcomeView extends GetView<WelcomeController> {
                     radius: 50.r,
                     verticalPadding: 16.h,
                     hasShadow: false,
+                    backgroundColor: theme.scaffoldBackgroundColor,
+                    foregroundColor:
+                        isLightTheme ? theme.primaryColor : Colors.white,
                   ).animate().fade().slideY(
-                    duration: 300.ms,
-                    begin: 1,
-                    curve: Curves.easeInSine,
-                  ),
+                        duration: 300.ms,
+                        begin: 1,
+                        curve: Curves.easeInSine,
+                      ),
                 ),
               ],
             ),

@@ -1,7 +1,7 @@
 class Constants {
-
   // assets images
   static const logo = 'assets/images/app_icon.png';
+  static const foodLogo = 'assets/images/food-app-logo.png';
 
   static const homeIcon = 'assets/vectors/home.svg';
   static const categoryIcon = 'assets/vectors/category.svg';
@@ -20,12 +20,14 @@ class Constants {
   static const emojiIcon = 'assets/vectors/emoji.svg';
   static const container = 'assets/vectors/container.svg';
 
+  static const noimage = 'assets/vectors/noimage.svg';
   static const apple = 'assets/vectors/apple.svg';
   static const broccoli = 'assets/vectors/broccoli.svg';
   static const cheese = 'assets/vectors/cheese.svg';
   static const meat = 'assets/vectors/meat.svg';
 
   static const background = 'assets/images/background.png';
+  static const newBackground = 'assets/images/background1.png';
   static const backgroundDark = 'assets/images/background_dark.png';
   static const avatar = 'assets/images/avatar.png';
   static const calendar = 'assets/images/calendar.png';
@@ -46,5 +48,5 @@ class Constants {
   static const card1 = 'assets/images/card1.png';
   static const card2 = 'assets/images/card2.png';
   static const card3 = 'assets/images/card3.png';
-
+  static const card4 = 'assets/images/mobile_banner_1.jpg';
 }

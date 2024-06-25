@@ -6,10 +6,9 @@ import '../../../data/models/product_model.dart';
 import '../../base/controllers/base_controller.dart';
 
 class CartController extends GetxController {
-
   // to hold the products in cart
   List<ProductModel> products = [];
-  
+
   @override
   void onInit() {
     getCartProducts();
@@ -21,15 +20,29 @@ class CartController extends GetxController {
     clearCart();
     Get.back();
     CustomSnackBar.showCustomSnackBar(
-      title: 'Purchased',
-      message: 'Order placed with success'
-    );
+        title: 'Purchased', message: 'Order placed with success');
   }
 
   /// get the cart products from the product list
   getCartProducts() {
-    products = DummyHelper.products.where((p) => p.quantity > 0).toList();
+    // products = DummyHelper.products.where((p) => p.quantity > 0).toList();
+    products = products.toList();
     update();
+  }
+
+  getProductCountFromCart(productId) {
+    var checkCartProduct =
+        Get.find<CartController>().products.contains((p) => p.id == productId);
+    print("Qty $checkCartProduct");
+    if (Get.find<CartController>()
+        .products
+        .where((element) => element.id == productId)
+        .isNotEmpty) {
+      var product = products.firstWhere((p) => p.id == productId);
+      return product.quantity;
+    } else {
+      return 1;
+    }
   }
 
   /// clear products in cart and reset cart items count

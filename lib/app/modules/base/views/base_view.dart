@@ -1,8 +1,13 @@
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:badges/badges.dart';
+// import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:get/get.dart';
+import 'package:grocery_app/app/components/bottom_nav_bar.dart';
+import 'package:grocery_app/app/modules/cart/views/cart_view.dart';
 
 import '../../../../utils/constants.dart';
 import '../../../routes/app_pages.dart';
@@ -28,75 +33,119 @@ class BaseView extends GetView<BaseController> {
             children: const [
               HomeView(),
               CategoryView(),
-              Center(),
+              CartView(),
               CalendarView(),
               ProfileView()
             ],
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: controller.currentIndex,
-          type: BottomNavigationBarType.fixed,
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          selectedFontSize: 0.0,
-          items: [
-            _mBottomNavItem(
+        bottomNavigationBar: CurvedNavigationBar(
+          backgroundColor: theme.secondaryHeaderColor,
+          // backgroundColor: Colors.transparent,
+          index: controller.currentIndex,
+          items: const [
+            CurvedNavigationBarItem(
+              child: Icon(
+                Icons.home_outlined,
+              ),
               label: 'Home',
-              icon: Constants.homeIcon,
+              // labelStyle: TextStyle(color: Colors.black)
             ),
-            _mBottomNavItem(
-              label: 'category',
-              icon: Constants.categoryIcon,
+            CurvedNavigationBarItem(
+              child: Icon(
+                Icons.search,
+              ),
+              label: 'Search',
+              // labelStyle: TextStyle(color: Colors.black),
             ),
-            const BottomNavigationBarItem(
-              label: '',
-              icon: Center(),
+            CurvedNavigationBarItem(
+              child: Icon(Icons.shopping_basket),
+              label: 'Cart',
+              // labelStyle: TextStyle(color: Colors.black),
             ),
-            _mBottomNavItem(
+            CurvedNavigationBarItem(
+              child: Icon(Icons.newspaper),
               label: 'Calendar',
-              icon: Constants.calendarIcon,
+              // labelStyle: TextStyle(color: Colors.black),
             ),
-            _mBottomNavItem(
+            CurvedNavigationBarItem(
+              child: Icon(Icons.perm_identity),
               label: 'Profile',
-              icon: Constants.userIcon,
+              // labelStyle: TextStyle(color: Colors.black),
             ),
           ],
-          onTap: controller.changeScreen,
+          color: Colors.white,
+          buttonBackgroundColor: theme.primaryColor,
+          animationCurve: Curves.easeInOut,
+          animationDuration: const Duration(milliseconds: 600),
+          onTap: (index) {
+            controller.changeScreen(index);
+          },
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          elevation: 0.0,
-          backgroundColor: Colors.transparent,
-          onPressed:() => Get.toNamed(Routes.CART),
-          child: GetBuilder<BaseController>(
-            id: 'CartBadge',
-            builder: (_) => Badge(
-              position: BadgePosition.bottomEnd(bottom: -16, end: 13),
-              badgeContent: Text(
-                controller.cartItemsCount.toString(),
-                style: theme.textTheme.bodyText2?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              badgeStyle: BadgeStyle(
-                elevation: 2,
-                badgeColor: theme.accentColor,
-                borderSide: const BorderSide(color: Colors.white, width: 1),
-              ),
-              child: CircleAvatar(
-                radius: 22.r,
-                backgroundColor: theme.primaryColor,
-                child: SvgPicture.asset(
-                  Constants.cartIcon, fit: BoxFit.none,
-                ),
-              ),
-            ),
-          ),
-        ),
+        // bottomNavigationBar: BottomNavigationBar(
+        //   currentIndex: controller.currentIndex,
+        //   type: BottomNavigationBarType.fixed,
+        //   elevation: 0.0,
+        //   backgroundColor: Colors.transparent,
+        //   showSelectedLabels: false,
+        //   showUnselectedLabels: false,
+        //   selectedFontSize: 0.0,
+        //   items: [
+        //     _mBottomNavItem(
+        //       label: 'Home',
+        //       icon: Constants.homeIcon,
+        //     ),
+        //     _mBottomNavItem(
+        //       label: 'category',
+        //       icon: Constants.categoryIcon,
+        //     ),
+        //     const BottomNavigationBarItem(
+        //       label: '',
+        //       icon: Center(),
+        //     ),
+        //     _mBottomNavItem(
+        //       label: 'Calendar',
+        //       icon: Constants.calendarIcon,
+        //     ),
+        //     _mBottomNavItem(
+        //       label: 'Profile',
+        //       icon: Constants.userIcon,
+        //     ),
+        //   ],
+        //   onTap: controller.changeScreen,
+        // ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        // floatingActionButton: FloatingActionButton(
+        //   elevation: 0.0,
+        //   backgroundColor: Colors.transparent,
+        //   onPressed: () => Get.toNamed(Routes.CART),
+        //   child: GetBuilder<BaseController>(
+        //     id: 'CartBadge',
+        //     builder: (_) => badges.Badge(
+        //       position: badges.BadgePosition.bottomEnd(bottom: -16, end: 13),
+        //       badgeContent: Text(
+        //         controller.cartItemsCount.toString(),
+        //         style: theme.textTheme.bodyMedium?.copyWith(
+        //           color: Colors.white,
+        //           fontWeight: FontWeight.bold,
+        //         ),
+        //       ),
+        //       badgeStyle: badges.BadgeStyle(
+        //         elevation: 2,
+        //         badgeColor: theme.colorScheme.secondary,
+        //         borderSide: const BorderSide(color: Colors.white, width: 1),
+        //       ),
+        //       child: CircleAvatar(
+        //         radius: 22.r,
+        //         backgroundColor: theme.primaryColor,
+        //         child: SvgPicture.asset(
+        //           Constants.cartIcon,
+        //           fit: BoxFit.none,
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }
@@ -105,8 +154,8 @@ class BaseView extends GetView<BaseController> {
     return BottomNavigationBarItem(
       label: label,
       icon: SvgPicture.asset(icon, color: Get.theme.iconTheme.color),
-      activeIcon: SvgPicture.asset(icon, color: Get.theme.appBarTheme.iconTheme?.color),
+      activeIcon:
+          SvgPicture.asset(icon, color: Get.theme.appBarTheme.iconTheme?.color),
     );
   }
-
 }

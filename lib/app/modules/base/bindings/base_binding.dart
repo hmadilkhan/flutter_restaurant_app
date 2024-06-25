@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:grocery_app/app/modules/cart/controllers/cart_controller.dart';
 import '../../calendar/controllers/calendar_controller.dart';
 import '../../category/controllers/category_controller.dart';
 import '../../home/controllers/home_controller.dart';
@@ -13,5 +14,6 @@ class BaseBinding extends Bindings {
     Get.lazyPut<CategoryController>(() => CategoryController());
     Get.lazyPut<CalendarController>(() => CalendarController());
     Get.lazyPut<ProfileController>(() => ProfileController());
+    Get.lazyPut<CartController>(() => CartController());
   }
 }

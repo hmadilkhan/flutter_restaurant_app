@@ -1,5 +1,9 @@
-import 'package:get/get.dart';
+import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:grocery_app/utils/api_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 import '../../../../config/theme/my_theme.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/dummy_helper.dart';
@@ -8,7 +12,6 @@ import '../../../data/models/category_model.dart';
 import '../../../data/models/product_model.dart';
 
 class HomeController extends GetxController {
-
   // to hold categories & products
   List<CategoryModel> categories = [];
   List<ProductModel> products = [];
@@ -17,12 +20,18 @@ class HomeController extends GetxController {
   var isLightTheme = MySharedPref.getThemeIsLight();
 
   // for home screen cards
-  var cards = [Constants.card1, Constants.card2, Constants.card3];
+  var cards = [
+    Constants.card1,
+    Constants.card2,
+    Constants.card3,
+    Constants.card4
+  ];
 
   @override
   void onInit() {
-    getCategories();
-    getProducts();
+    // getCategories();
+    // getProducts();
+    downloadAllData();
     super.onInit();
   }
 
@@ -42,5 +51,37 @@ class HomeController extends GetxController {
     isLightTheme = MySharedPref.getThemeIsLight();
     update(['Theme']);
   }
-  
+
+  Future<Object?>? downloadAllData() async {
+    try {
+      // final SharedPreferences prefs = await SharedPreferences.getInstance();
+      // var token = prefs.getString("token");
+      final uri = Uri.parse(ApiList.getAllData);
+      final response = await http.get(uri, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      });
+      if (response.statusCode == 200) {
+        categories = [];
+        cards = [];
+        products = [];
+        var result = jsonDecode(response.body);
+        var departments = result['website']['getDeparts'];
+        var sliders = result['website']['sliders'];
+
+        for (var depart in departments) {
+          categories.add(CategoryModel.fromJson(depart));
+        }
+        for (var slide in sliders) {
+          cards.add(slide['slide']);
+        }
+
+        return categories;
+      } else {
+        throw Exception('Failed to load departments');
+      }
+    } catch (e) {
+      return e;
+    }
+  }
 }

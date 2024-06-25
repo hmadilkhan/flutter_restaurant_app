@@ -9,8 +9,8 @@ import '../../../components/product_item.dart';
 import '../controllers/products_controller.dart';
 
 class ProductsView extends GetView<ProductsController> {
-  const ProductsView({Key? key}) : super(key: key);
-  
+  const ProductsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
@@ -33,8 +33,8 @@ class ProductsView extends GetView<ProductsController> {
                 ),
               ),
               Text(
-                'Vegetables 🌽',
-                style: theme.textTheme.headline3,
+                controller.categoryName,
+                style: theme.textTheme.displaySmall,
               ),
               CustomIconButton(
                 onPressed: () {},
@@ -61,9 +61,9 @@ class ProductsView extends GetView<ProductsController> {
           ),
           shrinkWrap: true,
           primary: false,
-          itemCount: controller.products.length,
+          itemCount: controller.filterProducts.length,
           itemBuilder: (context, index) => ProductItem(
-            product: controller.products[index],
+            product: controller.filterProducts[index],
           ),
         ),
       ),

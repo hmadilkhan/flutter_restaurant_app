@@ -9,37 +9,68 @@ import '../../controllers/cart_controller.dart';
 class CartItem extends GetView<CartController> {
   final ProductModel product;
   const CartItem({
-    Key? key,
+    super.key,
     required this.product,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(product.image, width: 50.w, height: 40.h),
-          16.horizontalSpace,
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(product.name, style: theme.textTheme.headline5),
-              5.verticalSpace,
-              Text(
-                '1kg, ${product.price}\$',
-                style: theme.textTheme.headline5?.copyWith(
-                  color: theme.accentColor,
-                ),
+      padding: EdgeInsets.symmetric(horizontal: 0.w),
+      child: ListTile(
+        leading: Image.network(
+            "https://sabify.sabsoft.com.pk/api/website/image/${product.image}/prod",
+            width: 60.w,
+            height: 60.h),
+        title: Text(product.name ?? 'No Name',
+            style: theme.textTheme.headlineSmall),
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '${product.price} PKR',
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: theme.colorScheme.secondary,
               ),
-            ],
-          ),
-          const Spacer(),
-          ProductCountItem(product: product),
-        ],
+            ),
+            ProductCountItem(product: product)
+          ],
+        ),
+        // trailing: Icon(
+        //   Icons.delete,
+        //   color: Colors.red,
+        // ),
       ),
     );
+    // return Padding(
+    //   padding: EdgeInsets.symmetric(horizontal: 24.w),
+    //   child: Row(
+    //     crossAxisAlignment: CrossAxisAlignment.center,
+    //     children: [
+    //       Image.network(
+    //           "https://sabify.sabsoft.com.pk/api/website/image/${product.image}/prod",
+    //           width: 50.w,
+    //           height: 40.h),
+    //       16.horizontalSpace,
+    //       Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         children: [
+    //           Text(product.name ?? 'No Name',
+    //               style: theme.textTheme.headlineSmall),
+    //           5.verticalSpace,
+    //           Text(
+    //             '1kg, ${product.price}\$',
+    //             style: theme.textTheme.headlineSmall?.copyWith(
+    //               color: theme.colorScheme.secondary,
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //       const Spacer(),
+    //       ProductCountItem(product: product),
+    //     ],
+    //   ),
+    // );
   }
 }

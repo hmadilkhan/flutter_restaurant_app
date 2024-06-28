@@ -11,6 +11,7 @@ class ProductDetailsController extends GetxController {
   ProductModel product = Get.arguments;
   RxInt selectedIndex = 0.obs;
   RxInt tag = 0.obs;
+  RxList tagVariation = [].obs;
   RxList variations = [].obs;
   RxList subVariations = [].obs;
 
@@ -29,15 +30,11 @@ class ProductDetailsController extends GetxController {
   }
 
   getSelectionChange(index) {
-    // print(variations.firstWhere((element) => element['id'] == index));
     subVariations = [].obs;
     var variations =
         product.variations?.firstWhere((element) => element.id == index);
-    // print(variations?.subvariations);
     if (variations != null && variations.subvariations != null) {
       for (var variation in variations.subvariations!) {
-        // print("${element.id} ${element.name}");
-        // print(element.values);
         subVariations.add({
           "id": variation.id,
           "name": variation.name,
@@ -50,8 +47,6 @@ class ProductDetailsController extends GetxController {
         });
       }
     }
-    print(subVariations);
-    print(subVariations.isNotEmpty);
     // selectedIndex.value = index;
     tag.value = index;
     update();
@@ -61,5 +56,12 @@ class ProductDetailsController extends GetxController {
     for (var variation in product.variations) {
       variations.add({'id': variation.id, 'name': variation.name});
     }
+  }
+
+  getSubVariation(index, value) {
+    // tagVariation.insert(index, value);
+    // tagVariation.replaceRange(0, 0, value);
+    tagVariation[index] = value;
+    print(tagVariation);
   }
 }

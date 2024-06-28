@@ -37,8 +37,9 @@ class SubVariation extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(left: 0.w, right: 15.w),
                           child: ChipsChoice<dynamic>.single(
-                            value: controller.tag.value,
-                            onChanged: (val) => {},
+                            value: controller.tagVariation[i],
+                            onChanged: (val) =>
+                                {controller.getSubVariation(i, val)},
                             choiceItems: C2Choice.listFrom<int, dynamic>(
                               source: controller.subVariations[i]['values']
                                   .toList(),

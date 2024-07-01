@@ -1,8 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:grocery_app/app/data/models/variation_model.dart';
-
 import '../../../data/models/product_model.dart';
 import '../../base/controllers/base_controller.dart';
 
@@ -11,14 +7,17 @@ class ProductDetailsController extends GetxController {
   ProductModel product = Get.arguments;
   RxInt selectedIndex = 0.obs;
   RxInt tag = 0.obs;
+  RxInt price = 0.obs;
   RxList tagVariation = [].obs;
+  RxList tagAddons = [].obs;
   RxList variations = [].obs;
+  RxList addons = [].obs;
   RxList subVariations = [].obs;
 
   @override
   void onInit() {
     super.onInit();
-    getVariationsToList(product);
+    initializeLists(product);
   }
 
   /// when the user press on add to cart button
@@ -33,7 +32,8 @@ class ProductDetailsController extends GetxController {
     subVariations = [].obs;
     var variations =
         product.variations?.firstWhere((element) => element.id == index);
-    if (variations != null && variations.subvariations != null) {
+    price.value = variations!.price!;
+    if (variations.subvariations != null) {
       for (var variation in variations.subvariations!) {
         subVariations.add({
           "id": variation.id,
@@ -47,21 +47,53 @@ class ProductDetailsController extends GetxController {
         });
       }
     }
+    // Initializing List according to subvariations
+    tagVariation.clear();
+    for (var i = 0; i < subVariations.length; i++) {
+      tagVariation.add(0);
+    }
     // selectedIndex.value = index;
     tag.value = index;
     update();
   }
 
-  getVariationsToList(product) {
+  initializeLists(product) {
+    price.value = product.price;
     for (var variation in product.variations) {
       variations.add({'id': variation.id, 'name': variation.name});
     }
+    // Initializing List according to subvariations
+    if (product.addons != null) {
+      tagAddons.clear();
+      for (var i = 0; i < product.addons.length; i++) {
+        tagAddons.add(0);
+      }
+      for (var addon in product.addons) {
+        addons.add({
+          "id": addon.id,
+          "name": addon.name,
+          "type": addon.type,
+          "selection_limit": addon.selectionLimit,
+          "is_required": addon.requiredStatus,
+          "values": addon.values?.map((addonValue) => {
+                "id": addonValue.id,
+                "product_id": addonValue.productId,
+                "name": addonValue.name,
+                "price": addonValue.price,
+                "image": addonValue.image,
+              })
+        });
+      }
+    }
   }
 
-  getSubVariation(index, value) {
-    // tagVariation.insert(index, value);
-    // tagVariation.replaceRange(0, 0, value);
+  getSubVariation(subvariation, index, value) {
+    // print(subvariation);
     tagVariation[index] = value;
-    print(tagVariation);
+  }
+
+  selectAddon(subvariation, index, value) {
+    // print(subvariation);
+    tagAddons[index] = value;
   }
 }

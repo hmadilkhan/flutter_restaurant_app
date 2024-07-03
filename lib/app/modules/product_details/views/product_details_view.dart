@@ -113,7 +113,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
             10.verticalSpace,
             const VariationWidget(),
             SubVariation(controller: controller),
-            Addon(),
+            const Addon(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: CustomButton(

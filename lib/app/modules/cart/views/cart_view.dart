@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:grocery_app/app/modules/cart/views/widgets/cart_items_list.dart';
 
 import '../../../../utils/constants.dart';
 import '../../../components/custom_button.dart';
@@ -50,17 +51,35 @@ class CartView extends GetView<CartController> {
           child: Column(
             children: [
               24.verticalSpace,
+              // Expanded(
+              //   child: controller.products.isEmpty
+              //       ? const NoData(text: 'No Products in Your Cart Yet!')
+              //       : ListView.separated(
+              //           separatorBuilder: (_, index) => Padding(
+              //             padding: EdgeInsets.only(top: 12.h, bottom: 24.h),
+              //             child: const Divider(thickness: 1),
+              //           ),
+              //           itemCount: controller.products.length,
+              //           itemBuilder: (context, index) => CartItem(
+              //             product: controller.products[index],
+              //           ).animate(delay: (100 * index).ms).fade().slideX(
+              //                 duration: 300.ms,
+              //                 begin: -1,
+              //                 curve: Curves.easeInSine,
+              //               ),
+              //         ),
+              // ),
               Expanded(
-                child: controller.products.isEmpty
+                child: controller.cartItems.isEmpty
                     ? const NoData(text: 'No Products in Your Cart Yet!')
                     : ListView.separated(
                         separatorBuilder: (_, index) => Padding(
                           padding: EdgeInsets.only(top: 12.h, bottom: 24.h),
                           child: const Divider(thickness: 1),
                         ),
-                        itemCount: controller.products.length,
-                        itemBuilder: (context, index) => CartItem(
-                          product: controller.products[index],
+                        itemCount: controller.cartItems.length,
+                        itemBuilder: (context, index) => CartItemList(
+                          item: controller.cartItems[index],
                         ).animate(delay: (100 * index).ms).fade().slideX(
                               duration: 300.ms,
                               begin: -1,

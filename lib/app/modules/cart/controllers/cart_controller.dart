@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 import '../../../../utils/dummy_helper.dart';
 import '../../../components/custom_snackbar.dart';
@@ -8,6 +9,7 @@ import '../../base/controllers/base_controller.dart';
 class CartController extends GetxController {
   // to hold the products in cart
   List<ProductModel> products = [];
+  RxList cartItems = [].obs;
 
   @override
   void onInit() {

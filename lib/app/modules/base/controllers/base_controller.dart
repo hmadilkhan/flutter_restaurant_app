@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:grocery_app/app/data/models/product_model.dart';
+import 'package:grocery_app/app/data/models/variation_model.dart';
+import 'package:grocery_app/app/modules/product_details/controllers/product_details_controller.dart';
 import 'package:grocery_app/app/modules/products/controllers/products_controller.dart';
 import 'package:grocery_app/config/theme/dark_theme_colors.dart';
 
@@ -44,6 +46,9 @@ class BaseController extends GetxController {
 
   /// when the user press on add + icon
   onIncreasePressed(int productId) {
+    var selectedvariation =
+        Get.find<ProductDetailsController>().selectedVariation;
+    var selectedaddons = Get.find<ProductDetailsController>().selectedAddon;
     if (Get.find<CartController>()
         .products
         .where((element) => element.id == productId)
@@ -56,11 +61,22 @@ class BaseController extends GetxController {
       var product =
           productsController.products.firstWhere((p) => p.id == productId);
       Get.find<CartController>().products.add(product);
+      Get.find<CartController>().cartItems.add({
+        "id": product.id,
+        "name": product.name,
+        "image": product.image,
+        "description": product.description,
+        "quantity": 1,
+        "price": product.price,
+        "variations": selectedvariation,
+        "addons": selectedaddons,
+      });
     }
     getCartItemsCount();
     if (Get.isRegistered<CartController>()) {
       Get.find<CartController>().getCartProducts();
     }
+    print(Get.find<CartController>().cartItems);
     update(['ProductQuantity']);
   }
 

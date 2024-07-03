@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
+import 'package:grocery_app/app/components/sub_variation.dart';
+import 'package:grocery_app/app/data/models/subvariation_model.dart';
 import '../../../data/models/product_model.dart';
 import '../../base/controllers/base_controller.dart';
 
@@ -13,6 +17,9 @@ class ProductDetailsController extends GetxController {
   RxList variations = [].obs;
   RxList addons = [].obs;
   RxList subVariations = [].obs;
+  var selectedVariation = [];
+  var selectedSubVariation = [];
+  var selectedAddon = [];
 
   @override
   void onInit() {
@@ -33,6 +40,13 @@ class ProductDetailsController extends GetxController {
     var variations =
         product.variations?.firstWhere((element) => element.id == index);
     price.value = variations!.price!;
+    selectedVariation.clear();
+    selectedVariation.add({
+      "id": variations.id,
+      "name": variations.name,
+      "price": variations.price,
+      "bdPrice": variations.bdPrice,
+    });
     if (variations.subvariations != null) {
       for (var variation in variations.subvariations!) {
         subVariations.add({
@@ -88,12 +102,36 @@ class ProductDetailsController extends GetxController {
   }
 
   getSubVariation(subvariation, index, value) {
-    // print(subvariation);
+    var checkvariations = selectedSubVariation
+        .firstWhereOrNull((element) => element["id"] == subvariation["id"]);
+    if (checkvariations != null) {
+      checkvariations["values"] = subvariation["values"]
+          .firstWhere((element) => element["id"] == value);
+    } else {
+      selectedSubVariation.add({
+        "id": subvariation["id"],
+        "name": subvariation["name"],
+        "values": subvariation["values"]
+            .firstWhere((element) => element["id"] == value)
+      });
+    }
     tagVariation[index] = value;
   }
 
-  selectAddon(subvariation, index, value) {
-    // print(subvariation);
+  selectAddon(addon, index, value) {
     tagAddons[index] = value;
+    var checkAddon = selectedAddon
+        .firstWhereOrNull((element) => element["id"] == addon["id"]);
+    if (checkAddon != null) {
+      checkAddon["values"] =
+          addon["values"].firstWhere((element) => element["id"] == value);
+    } else {
+      selectedAddon.add({
+        "id": addon["id"],
+        "name": addon["name"],
+        "values":
+            addon["values"].firstWhere((element) => element["id"] == value)
+      });
+    }
   }
 }

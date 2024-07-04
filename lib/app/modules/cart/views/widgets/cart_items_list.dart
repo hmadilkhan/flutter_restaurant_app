@@ -25,7 +25,7 @@ class CartItemList extends GetView<CartController> {
                 width: 60.w,
                 height: 60.h),
             title: Text(item["name"] ?? 'No Name',
-                style: theme.textTheme.headlineSmall),
+                style: theme.textTheme.headlineMedium),
             subtitle: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -39,26 +39,111 @@ class CartItemList extends GetView<CartController> {
               ],
             ),
           ),
-          SizedBox(
-            height: 15,
-            child: ListView.builder(
-                itemCount: item['variations'].length,
-                itemBuilder: (context, index) {
-                  final variation = item['variations'][index];
-                  // print(" Print : ${variation[index]}");
-                  return Text(variation["name"]);
-                }),
-          ),
-          SizedBox(
-            height: 15,
-            child: ListView.builder(
-                itemCount: item['addons'].length,
-                itemBuilder: (context, index) {
-                  final addon = item['addons'][index];
-                  // print(" Print : ${variation[index]}");
-                  return Text(addon["name"]);
-                }),
-          ),
+          if (item['subVariations'] != null) ...{
+            for (int i = 0; i < item['subVariations'].length; i++) ...{
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: theme.primaryColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item['subVariations'][i]["name"],
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                            color: Colors.white,
+                            backgroundColor: theme.primaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 10.w,
+                ),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item['subVariations'][i]["values"]['name'],
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                      Text(
+                        "PKR ${item['subVariations'][i]["values"]['price'].toString()}",
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            },
+          },
+          if (item['addons'] != null) ...{
+            for (int i = 0; i < item['addons'].length; i++) ...{
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: theme.primaryColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item['addons'][i]["name"],
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                            color: Colors.white,
+                            backgroundColor: theme.primaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 12.w,
+                ),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        item['addons'][i]["values"]['name'],
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                      Text(
+                        "PKR ${item['subVariations'][i]["values"]['price'].toString()}",
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            },
+          },
         ],
       ),
     );

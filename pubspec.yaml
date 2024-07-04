@@ -23,6 +23,7 @@ dependencies:
   http: ^1.2.1
   curved_labeled_navigation_bar: ^2.0.2
   chips_choice: ^3.0.1
+  otp_pin_field: ^1.2.8
 
 dev_dependencies:
   mockito:

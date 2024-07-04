@@ -48,6 +48,8 @@ class BaseController extends GetxController {
   onIncreasePressed(int productId) {
     var selectedvariation =
         Get.find<ProductDetailsController>().selectedVariation;
+    var selectedSubVariation =
+        Get.find<ProductDetailsController>().selectedSubVariation;
     var selectedaddons = Get.find<ProductDetailsController>().selectedAddon;
     if (Get.find<CartController>()
         .products
@@ -69,6 +71,7 @@ class BaseController extends GetxController {
         "quantity": 1,
         "price": product.price,
         "variations": selectedvariation,
+        "subVariations": selectedSubVariation,
         "addons": selectedaddons,
       });
     }

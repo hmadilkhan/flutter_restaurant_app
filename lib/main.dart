@@ -23,23 +23,26 @@ Future<void> main() async {
       rebuildFactor: (old, data) => true,
       builder: (context, widget) {
         return GetMaterialApp(
-          title: "Grocery App",
+          title: "Restaurant App",
           useInheritedMediaQuery: true,
           debugShowCheckedModeBanner: false,
-          builder: (context,widget) {
+          builder: (context, widget) {
             bool themeIsLight = MySharedPref.getThemeIsLight();
             return Theme(
               data: MyTheme.getThemeData(isLight: themeIsLight),
               child: MediaQuery(
-                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                data: MediaQuery.of(context)
+                    .copyWith(textScaler: const TextScaler.linear(1.0)),
                 child: widget!,
               ),
             );
           },
-          initialRoute: AppPages.INITIAL, // first screen to show when app is running
+          initialRoute:
+              AppPages.INITIAL, // first screen to show when app is running
           getPages: AppPages.routes, // app screens
           locale: MySharedPref.getCurrentLocal(), // app language
-          translations: LocalizationService.getInstance(), // localization services in app (controller app language)
+          translations: LocalizationService
+              .getInstance(), // localization services in app (controller app language)
         );
       },
     ),

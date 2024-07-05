@@ -14,8 +14,8 @@ class SplashView extends GetView<SplashController> {
     Get.put(SplashController());
     var theme = context.theme;
     return Scaffold(
-      // backgroundColor: theme.primaryColorLight,
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: theme.primaryColorLight,
+      // backgroundColor: theme.scaffoldBackgroundColor,
       body: Center(
         child: CircleAvatar(
           radius: 55.r,

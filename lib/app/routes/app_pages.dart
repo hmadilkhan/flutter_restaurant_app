@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:grocery_app/app/modules/login/bindings/login_binding.dart';
 import 'package:grocery_app/app/modules/login/views/login_view.dart';
+import 'package:grocery_app/app/modules/otp/binding/otp_binding.dart';
+import 'package:grocery_app/app/modules/otp/view/otp_view.dart';
 
 import '../modules/base/bindings/base_binding.dart';
 import '../modules/base/views/base_view.dart';
@@ -45,6 +47,11 @@ class AppPages {
       name: _Paths.LOGIN,
       page: () => const LoginView(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      name: _Paths.OTP,
+      page: () => const OtpView(),
+      binding: OtpBinding(),
     ),
     GetPage(
       name: _Paths.BASE,

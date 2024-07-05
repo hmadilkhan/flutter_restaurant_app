@@ -73,7 +73,7 @@ class WelcomeView extends GetView<WelcomeController> {
                   padding: EdgeInsets.symmetric(horizontal: 70.w),
                   child: CustomButton(
                     text: 'Shop now',
-                    onPressed: () => Get.offNamed(Routes.BASE),
+                    onPressed: () => Get.offNamed(Routes.LOGIN),
                     fontSize: 16.sp,
                     radius: 50.r,
                     verticalPadding: 16.h,

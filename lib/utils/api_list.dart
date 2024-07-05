@@ -6,4 +6,6 @@ class ApiList {
   // static String department = "${baseUrl!}/api/get-departments";
   // static String products = "${baseUrl!}/api/get-products";
   static String getAllData = "${baseUrl!}/api/website/get-detail/$websiteId";
+  static String login = "${baseUrl!}/api/website/customer-login";
+  static String verifyOtp = "${baseUrl!}/api/website/verify-otp";
 }

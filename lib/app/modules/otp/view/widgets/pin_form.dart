@@ -13,20 +13,22 @@ Widget pinInputForm() {
             Pinput(
               length: 6,
               validator: (value) {
+                print(controller.validCode);
                 return value == controller.validCode ? null : 'Incorrect Pin';
               },
               onCompleted: (pin) {
                 print("Success $pin");
+                controller.moveToShop(pin);
               },
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            RoundButton(
-                title: "Next",
-                onPressed: () {
-                  controller.formKey.currentState!.validate();
-                }),
+            // const SizedBox(
+            //   height: 20,
+            // ),
+            // RoundButton(
+            //     title: "Next",
+            //     onPressed: () {
+            //       controller.formKey.currentState!.validate();
+            //     }),
           ],
         ));
   });

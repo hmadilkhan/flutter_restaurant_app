@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:grocery_app/app/data/local/my_shared_pref.dart';
 import 'package:grocery_app/app/routes/app_pages.dart';
 import 'package:grocery_app/utils/api_list.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +14,7 @@ class LoginController extends GetxController {
   RxnString errorText = RxnString(null);
   Rxn<Function()> submitFunc = Rxn<Function()>(null);
   RxBool isLoading = false.obs;
-  int otp = 0;
+  String otp = "";
 
   void btnLogin() async {
     isLoading.value = false;
@@ -46,15 +47,17 @@ class LoginController extends GetxController {
         'webId': ApiList.websiteId.toString(),
         'mode': 'android'
       };
-      final response = await http
+      await http
           .post(
         uri,
         body: body,
       )
           .then((response) {
+        print(response.statusCode);
         if (response.statusCode == 200) {
           var result = jsonDecode(response.body);
-          otp = result['otp'];
+          otp = result['otp'].toString();
+          print("OTP is set to : $otp");
           isLoading.value = false;
           return otp;
         } else {
@@ -63,6 +66,7 @@ class LoginController extends GetxController {
         }
       }).catchError((error) {
         isLoading.value = false;
+        print(error);
         return error;
       });
     } catch (e) {

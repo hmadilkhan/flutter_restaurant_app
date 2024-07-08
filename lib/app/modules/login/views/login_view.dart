@@ -44,7 +44,7 @@ class LoginView extends GetView<LoginController> {
                       fontWeight: FontWeight.w800),
                 ),
                 Text(
-                  "Add your details to login",
+                  "Enter Login details to continue.",
                   style: TextStyle(
                       color: theme.colorScheme.secondary,
                       fontSize: 14,

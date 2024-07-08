@@ -14,6 +14,8 @@ class MySharedPref {
   static const String _fcmTokenKey = 'fcm_token';
   static const String _currentLocalKey = 'current_local';
   static const String _lightThemeKey = 'is_theme_light';
+  static const String _isLogin = "is_login";
+  static const String _name = "name";
 
   /// init get storage services
   static Future<void> init() async {
@@ -30,20 +32,21 @@ class MySharedPref {
 
   /// get if the current theme type is light
   static bool getThemeIsLight() =>
-      _sharedPreferences.getBool(_lightThemeKey) ?? true; // todo set the default theme (true for light, false for dark)
+      _sharedPreferences.getBool(_lightThemeKey) ??
+      true; // todo set the default theme (true for light, false for dark)
 
   /// save current locale
   static Future<void> setCurrentLanguage(String languageCode) =>
       _sharedPreferences.setString(_currentLocalKey, languageCode);
 
   /// get current locale
-  static Locale getCurrentLocal(){
-      String? langCode = _sharedPreferences.getString(_currentLocalKey);
-      // default language is english
-      if(langCode == null){
-        return LocalizationService.defaultLanguage;
-      }
-      return LocalizationService.supportedLanguages[langCode]!;
+  static Locale getCurrentLocal() {
+    String? langCode = _sharedPreferences.getString(_currentLocalKey);
+    // default language is english
+    if (langCode == null) {
+      return LocalizationService.defaultLanguage;
+    }
+    return LocalizationService.supportedLanguages[langCode]!;
   }
 
   /// save generated fcm token
@@ -51,10 +54,22 @@ class MySharedPref {
       _sharedPreferences.setString(_fcmTokenKey, token);
 
   /// get generated fcm token
-  static String? getFcmToken() =>
-      _sharedPreferences.getString(_fcmTokenKey);
+  static String? getFcmToken() => _sharedPreferences.getString(_fcmTokenKey);
+
+  /// save generated fcm token
+  static Future<void> setIsAuth(bool isAuth) =>
+      _sharedPreferences.setBool(_isLogin, isAuth);
+
+  /// get generated fcm token
+  static bool? getIsAuth() => _sharedPreferences.getBool(_isLogin) ?? true;
+
+  /// save user name
+  static Future<void> setUserName(String name) =>
+      _sharedPreferences.setString(_name, name);
+
+  /// get user name
+  static String? getUserName() => _sharedPreferences.getString(_name);
 
   /// clear all data from shared pref
   static Future<void> clear() async => await _sharedPreferences.clear();
-
 }

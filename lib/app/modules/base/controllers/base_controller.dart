@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:grocery_app/app/data/local/my_shared_pref.dart';
 import 'package:grocery_app/app/data/models/product_model.dart';
 import 'package:grocery_app/app/data/models/variation_model.dart';
 import 'package:grocery_app/app/modules/product_details/controllers/product_details_controller.dart';
@@ -14,6 +15,7 @@ class BaseController extends GetxController {
   ProductsController productsController = Get.put(ProductsController());
   // current screen index
   int currentIndex = 0;
+  String? userName = "";
 
   // to count the number of products in the cart
   int cartItemsCount = 0;
@@ -21,6 +23,7 @@ class BaseController extends GetxController {
   @override
   void onInit() {
     getCartItemsCount();
+    getUserName();
     super.onInit();
   }
 
@@ -28,6 +31,10 @@ class BaseController extends GetxController {
   changeScreen(int selectedIndex) {
     currentIndex = selectedIndex;
     update();
+  }
+
+  getUserName() {
+    userName = MySharedPref.getUserName();
   }
 
   getProductCountFromCart(productId) {

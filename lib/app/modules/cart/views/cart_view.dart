@@ -51,24 +51,6 @@ class CartView extends GetView<CartController> {
           child: Column(
             children: [
               24.verticalSpace,
-              // Expanded(
-              //   child: controller.products.isEmpty
-              //       ? const NoData(text: 'No Products in Your Cart Yet!')
-              //       : ListView.separated(
-              //           separatorBuilder: (_, index) => Padding(
-              //             padding: EdgeInsets.only(top: 12.h, bottom: 24.h),
-              //             child: const Divider(thickness: 1),
-              //           ),
-              //           itemCount: controller.products.length,
-              //           itemBuilder: (context, index) => CartItem(
-              //             product: controller.products[index],
-              //           ).animate(delay: (100 * index).ms).fade().slideX(
-              //                 duration: 300.ms,
-              //                 begin: -1,
-              //                 curve: Curves.easeInSine,
-              //               ),
-              //         ),
-              // ),
               Expanded(
                 child: controller.cartItems.isEmpty
                     ? const NoData(text: 'No Products in Your Cart Yet!')
@@ -80,6 +62,7 @@ class CartView extends GetView<CartController> {
                         itemCount: controller.cartItems.length,
                         itemBuilder: (context, index) => CartItemList(
                           item: controller.cartItems[index],
+                          index: index,
                         ).animate(delay: (100 * index).ms).fade().slideX(
                               duration: 300.ms,
                               begin: -1,

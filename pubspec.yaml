@@ -8,6 +8,7 @@ environment:
 dependencies: 
   cupertino_icons:
   get: # for state management and context less stuff
+  get_storage: ^2.1.1
   flutter_screenutil: # make app responsive
   shared_preferences: # shared preferences persistence key value store
   flutter_launcher_icons: # change app icon

@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:grocery_app/app/data/local/storage_controller.dart';
 import 'package:grocery_app/app/modules/base/controllers/base_controller.dart';
 import 'package:grocery_app/app/modules/products/controllers/products_controller.dart';
 import 'package:grocery_app/app/routes/app_pages.dart';
@@ -21,8 +22,10 @@ class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
+    final StorageController _storage = StorageController();
     final theme = context.theme;
     final productsController = Get.put(ProductsController());
+
     return DarkTransition(
       offset: Offset(context.width, -1),
       isDark: !controller.isLightTheme,
@@ -44,12 +47,12 @@ class HomeView extends GetView<HomeController> {
                     ListTile(
                       contentPadding: EdgeInsets.symmetric(horizontal: 24.w),
                       title: Text(
-                        'Good morning',
+                        controller.getGreeting(),
                         style: theme.textTheme.bodyMedium
                             ?.copyWith(fontSize: 12.sp),
                       ),
                       subtitle: Text(
-                        'Amelia Barlow',
+                        _storage.readData("username") ?? '',
                         style: theme.textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.normal,
                         ),

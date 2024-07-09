@@ -6,8 +6,6 @@ import '../../../routes/app_pages.dart';
 class SplashController extends GetxController {
   @override
   void onInit() async {
-    MySharedPref.setIsAuth(false);
-    print("checking Auth : ${MySharedPref.getIsAuth()}");
     await Future.delayed(const Duration(seconds: 2));
     if (MySharedPref.getIsAuth() == true) {
       Get.offNamed(Routes.BASE);

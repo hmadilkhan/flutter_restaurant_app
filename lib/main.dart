@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'app/data/local/my_shared_pref.dart';
 import 'app/routes/app_pages.dart';
@@ -8,9 +9,9 @@ import 'config/theme/my_theme.dart';
 import 'config/translations/localization_service.dart';
 
 Future<void> main() async {
+  await GetStorage.init();
   // wait for bindings
   WidgetsFlutterBinding.ensureInitialized();
-
   // init shared preference
   await MySharedPref.init();
 

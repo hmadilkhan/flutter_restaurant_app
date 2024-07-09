@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:grocery_app/utils/api_list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../../../config/theme/my_theme.dart';
 import '../../../../utils/constants.dart';
@@ -29,10 +28,22 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    // getCategories();
-    // getProducts();
     downloadAllData();
     super.onInit();
+  }
+
+  String getGreeting() {
+    var hour = DateTime.now().hour;
+
+    if (hour < 12) {
+      return 'Good Morning';
+    } else if (hour < 17) {
+      return 'Good Afternoon';
+    } else if (hour < 20) {
+      return 'Good Evening';
+    } else {
+      return 'Good Night';
+    }
   }
 
   /// get categories from dummy helper
@@ -54,8 +65,6 @@ class HomeController extends GetxController {
 
   Future<Object?>? downloadAllData() async {
     try {
-      // final SharedPreferences prefs = await SharedPreferences.getInstance();
-      // var token = prefs.getString("token");
       final uri = Uri.parse(ApiList.getAllData);
       final response = await http.get(uri, headers: {
         'Content-Type': 'application/json',

@@ -16,6 +16,7 @@ class MySharedPref {
   static const String _lightThemeKey = 'is_theme_light';
   static const String _isLogin = "is_login";
   static const String _name = "name";
+  static const String _phone = "phone";
 
   /// init get storage services
   static Future<void> init() async {
@@ -69,6 +70,13 @@ class MySharedPref {
 
   /// get user name
   static String? getUserName() => _sharedPreferences.getString(_name);
+
+  /// save phone
+  static Future<void> setUserPhone(String phone) =>
+      _sharedPreferences.setString(_phone, phone);
+
+  /// get phone
+  static String? getUserPhone() => _sharedPreferences.getString(_phone);
 
   /// clear all data from shared pref
   static Future<void> clear() async => await _sharedPreferences.clear();

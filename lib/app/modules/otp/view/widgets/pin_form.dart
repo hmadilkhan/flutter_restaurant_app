@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_app/app/components/round_button.dart';
 import 'package:grocery_app/app/modules/otp/controller/otp_controller.dart';
 import 'package:pinput/pinput.dart';
 
@@ -13,22 +12,14 @@ Widget pinInputForm() {
             Pinput(
               length: 6,
               validator: (value) {
-                print(controller.validCode);
-                return value == controller.validCode ? null : 'Incorrect Pin';
+                return value == controller.storageController.readData("otp")
+                    ? null
+                    : 'Incorrect Pin';
               },
               onCompleted: (pin) {
-                print("Success $pin");
                 controller.moveToShop(pin);
               },
             ),
-            // const SizedBox(
-            //   height: 20,
-            // ),
-            // RoundButton(
-            //     title: "Next",
-            //     onPressed: () {
-            //       controller.formKey.currentState!.validate();
-            //     }),
           ],
         ));
   });

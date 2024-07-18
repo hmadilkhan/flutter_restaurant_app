@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:grocery_app/app/data/local/storage_controller.dart';
 
 import '../../../../utils/dummy_helper.dart';
 import '../../../components/custom_snackbar.dart';
@@ -10,6 +13,9 @@ class CartController extends GetxController {
   // to hold the products in cart
   List<ProductModel> products = [];
   RxList cartItems = [].obs;
+  RxList completeOrder = [].obs;
+  var contact_details = [];
+  final StorageController storageController = Get.put(StorageController());
 
   @override
   void onInit() {
@@ -19,8 +25,36 @@ class CartController extends GetxController {
 
   /// when the user press on purchase now button
   onPurchaseNowPressed() {
-    clearCart();
-    Get.back();
+    // clearCart();
+    // Get.back();
+    print("${cartItems}");
+    Map<String, dynamic> contactdetails = {
+      'fullName': storageController.readData('username'),
+      'email': '',
+      'phNumber': storageController.readData('phone'),
+      'fullAddress': '',
+      'landmark': '',
+      'instructions': '',
+    };
+
+    Map<String, dynamic> cartData = {
+      'count': cartItems.length,
+      'cartItems': cartItems,
+      'totalAmount': storageController.readData('phone'),
+      'fullAddress': '',
+      'landmark': '',
+      'instructions': '',
+    };
+
+    Map<String, dynamic> contact_details = {
+      'contact_details': contactdetails,
+      'cart_data': cartItems,
+    };
+
+    completeOrder.add(contact_details);
+
+    // print("$completeOrder");
+
     CustomSnackBar.showCustomSnackBar(
         title: 'Purchased', message: 'Order placed with success');
   }

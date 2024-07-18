@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:get/get.dart';
 import 'package:grocery_app/app/components/sub_variation.dart';
@@ -11,6 +12,7 @@ class ProductDetailsController extends GetxController {
   ProductModel product = Get.arguments;
   RxInt selectedIndex = 0.obs;
   RxInt tag = 0.obs;
+  RxInt originalPrice = 0.obs;
   RxInt price = 0.obs;
   RxList tagVariation = [].obs;
   RxList tagAddons = [].obs;
@@ -52,11 +54,11 @@ class ProductDetailsController extends GetxController {
         subVariations.add({
           "id": variation.id,
           "name": variation.name,
-          "values": variation.values?.map((subvaiation) => {
-                "id": subvaiation.id,
-                "product_id": subvaiation.productId,
-                "name": subvaiation.name,
-                "price": subvaiation.price
+          "values": variation.values?.map((subvariation) => {
+                "id": subvariation.id,
+                "product_id": subvariation.productId,
+                "name": subvariation.name,
+                "price": subvariation.price
               })
         });
       }
@@ -72,7 +74,8 @@ class ProductDetailsController extends GetxController {
   }
 
   initializeLists(product) {
-    price.value = product.price;
+    // price.value = product.price;
+    originalPrice.value = product.price;
     for (var variation in product.variations) {
       variations.add({'id': variation.id, 'name': variation.name});
     }
@@ -122,6 +125,12 @@ class ProductDetailsController extends GetxController {
     tagAddons[index] = value;
     var checkAddon = selectedAddon
         .firstWhereOrNull((element) => element["id"] == addon["id"]);
+    var addonPrice =
+        addon["values"].firstWhere((element) => element["id"] == value);
+    print(addonPrice['price']);
+    print(originalPrice.value);
+
+    price.value = originalPrice.value + addonPrice['price'] as int;
     if (checkAddon != null) {
       checkAddon["values"] =
           addon["values"].firstWhere((element) => element["id"] == value);

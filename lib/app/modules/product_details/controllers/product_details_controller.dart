@@ -127,8 +127,8 @@ class ProductDetailsController extends GetxController {
         .firstWhereOrNull((element) => element["id"] == addon["id"]);
     var addonPrice =
         addon["values"].firstWhere((element) => element["id"] == value);
-    print(addonPrice['price']);
-    print(originalPrice.value);
+    // print(addonPrice['price']);
+    // print(originalPrice.value);
 
     price.value = originalPrice.value + addonPrice['price'] as int;
     if (checkAddon != null) {

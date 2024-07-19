@@ -4,8 +4,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:grocery_app/app/components/Addon.dart';
-import 'package:grocery_app/app/components/sub_variation.dart';
+import 'package:grocery_app/app/modules/product_details/components/Addon.dart';
+import 'package:grocery_app/app/modules/product_details/components/sub_variation.dart';
 import 'package:grocery_app/app/data/models/variation_model.dart';
 import 'package:grocery_app/app/widgets/variation_widget.dart';
 

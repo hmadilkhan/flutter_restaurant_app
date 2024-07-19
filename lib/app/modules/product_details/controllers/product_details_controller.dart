@@ -1,9 +1,7 @@
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:get/get.dart';
-import 'package:grocery_app/app/components/sub_variation.dart';
-import 'package:grocery_app/app/data/models/subvariation_model.dart';
+import 'package:grocery_app/app/modules/product_details/services/addon_service.dart';
+import 'package:grocery_app/app/modules/product_details/services/sub_variation_service.dart';
+import 'package:grocery_app/app/modules/product_details/services/variation_service.dart';
 import '../../../data/models/product_model.dart';
 import '../../base/controllers/base_controller.dart';
 
@@ -19,20 +17,28 @@ class ProductDetailsController extends GetxController {
   RxList variations = [].obs;
   RxList addons = [].obs;
   RxList subVariations = [].obs;
+  var addonPrices = [];
+  var subvariationPrices = [];
   var selectedVariation = [];
   var selectedSubVariation = [];
   var selectedAddon = [];
+  late AddonService addonService;
+  late SubVariationService subVariationService;
+  late VariationService variationService;
 
   @override
   void onInit() {
     super.onInit();
+    variationService = VariationService(this);
+    subVariationService = SubVariationService(this);
+    addonService = AddonService(this);
     initializeLists(product);
   }
 
   /// when the user press on add to cart button
   onAddToCartPressed() {
     // if (product.quantity == 0) {
-    Get.find<BaseController>().onIncreasePressed(product.id ?? 0);
+    Get.find<BaseController>().onIncreasePressed(product.id ?? 0, price.value);
     // }
     Get.back();
   }
@@ -41,106 +47,38 @@ class ProductDetailsController extends GetxController {
     subVariations = [].obs;
     var variations =
         product.variations?.firstWhere((element) => element.id == index);
+    // print("Variation Price : ${variations!.price!}");
     price.value = variations!.price!;
+    originalPrice.value = variations.price!;
+    subvariationPrices = [];
     selectedVariation.clear();
-    selectedVariation.add({
-      "id": variations.id,
-      "name": variations.name,
-      "price": variations.price,
-      "bdPrice": variations.bdPrice,
-    });
+    variationService.addVariationToList(variations);
     if (variations.subvariations != null) {
-      for (var variation in variations.subvariations!) {
-        subVariations.add({
-          "id": variation.id,
-          "name": variation.name,
-          "values": variation.values?.map((subvariation) => {
-                "id": subvariation.id,
-                "product_id": subvariation.productId,
-                "name": subvariation.name,
-                "price": subvariation.price
-              })
-        });
-      }
+      subVariationService.addSubVariationInList(variations.subvariations);
     }
     // Initializing List according to subvariations
-    tagVariation.clear();
-    for (var i = 0; i < subVariations.length; i++) {
-      tagVariation.add(0);
-    }
-    // selectedIndex.value = index;
-    tag.value = index;
+    variationService.initializevariationTag(index);
+    variationService.calculatePrice();
     update();
   }
 
   initializeLists(product) {
-    // price.value = product.price;
+    addonPrices = [];
+    subvariationPrices = [];
     originalPrice.value = product.price;
-    for (var variation in product.variations) {
-      variations.add({'id': variation.id, 'name': variation.name});
-    }
-    // Initializing List according to subvariations
-    if (product.addons != null) {
-      tagAddons.clear();
-      for (var i = 0; i < product.addons.length; i++) {
-        tagAddons.add(0);
-      }
-      for (var addon in product.addons) {
-        addons.add({
-          "id": addon.id,
-          "name": addon.name,
-          "type": addon.type,
-          "selection_limit": addon.selectionLimit,
-          "is_required": addon.requiredStatus,
-          "values": addon.values?.map((addonValue) => {
-                "id": addonValue.id,
-                "product_id": addonValue.productId,
-                "name": addonValue.name,
-                "price": addonValue.price,
-                "image": addonValue.image,
-              })
-        });
-      }
-    }
+    // Initializing Variation List
+    variationService.initializeVariationList();
+    addonService.initializeAddons(product);
   }
 
   getSubVariation(subvariation, index, value) {
-    var checkvariations = selectedSubVariation
-        .firstWhereOrNull((element) => element["id"] == subvariation["id"]);
-    if (checkvariations != null) {
-      checkvariations["values"] = subvariation["values"]
-          .firstWhere((element) => element["id"] == value);
-    } else {
-      selectedSubVariation.add({
-        "id": subvariation["id"],
-        "name": subvariation["name"],
-        "values": subvariation["values"]
-            .firstWhere((element) => element["id"] == value)
-      });
-    }
-    tagVariation[index] = value;
+    subVariationService.getSubVariation(subvariation, index, value);
+    subVariationService.calculateSubVariationPrice(subvariation, index, value);
   }
 
   selectAddon(addon, index, value) {
     tagAddons[index] = value;
-    var checkAddon = selectedAddon
-        .firstWhereOrNull((element) => element["id"] == addon["id"]);
-    var addonPrice =
-        addon["values"].firstWhere((element) => element["id"] == value);
-    // print(addonPrice['price']);
-    // print(originalPrice.value);
-
-    price.value = originalPrice.value + addonPrice['price'] as int;
-    if (checkAddon != null) {
-      checkAddon["values"] =
-          addon["values"].firstWhere((element) => element["id"] == value);
-    } else {
-      selectedAddon.add({
-        "id": addon["id"],
-        "name": addon["name"],
-        "values":
-            addon["values"].firstWhere((element) => element["id"] == value)
-      });
-    }
+    addonService.checkAddonSelectedOrNot(addon, index, value);
+    addonService.calculateAddonPrice(addon, index, value);
   }
 }

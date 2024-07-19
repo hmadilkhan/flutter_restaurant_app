@@ -27,7 +27,7 @@ class CartController extends GetxController {
   onPurchaseNowPressed() {
     // clearCart();
     // Get.back();
-    print("${cartItems}");
+    // print("${cartItems}");
     Map<String, dynamic> contactdetails = {
       'fullName': storageController.readData('username'),
       'email': '',
@@ -53,7 +53,7 @@ class CartController extends GetxController {
 
     completeOrder.add(contact_details);
 
-    // print("$completeOrder");
+    print("$completeOrder");
 
     CustomSnackBar.showCustomSnackBar(
         title: 'Purchased', message: 'Order placed with success');

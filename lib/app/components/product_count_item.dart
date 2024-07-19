@@ -41,7 +41,7 @@ class ProductCountItem extends GetView<BaseController> {
         CustomIconButton(
           width: 36.w,
           height: 36.h,
-          onPressed: () => controller.onIncreasePressed(product.id ?? 0),
+          onPressed: () => {}, //controller.onIncreasePressed(product.id ?? 0),
           // onPressed: () => {},
           icon: SvgPicture.asset(
             Constants.addIcon,

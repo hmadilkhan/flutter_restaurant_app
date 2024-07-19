@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:grocery_app/app/modules/cart/views/widgets/cart_items_list.dart';
+import 'package:grocery_app/app/services/cart_service.dart';
 
 import '../../../../utils/constants.dart';
 import '../../../components/custom_button.dart';
@@ -18,6 +19,8 @@ class CartView extends GetView<CartController> {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
+    final CartService cartService = Get.find<CartService>();
+    print("Cart Items : ${cartService.cartItems.length}");
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -52,16 +55,16 @@ class CartView extends GetView<CartController> {
             children: [
               24.verticalSpace,
               Expanded(
-                child: controller.cartItems.isEmpty
+                child: cartService.cartItems.isEmpty
                     ? const NoData(text: 'No Products in Your Cart Yet!')
                     : ListView.separated(
                         separatorBuilder: (_, index) => Padding(
                           padding: EdgeInsets.only(top: 12.h, bottom: 24.h),
                           child: const Divider(thickness: 1),
                         ),
-                        itemCount: controller.cartItems.length,
+                        itemCount: cartService.cartItems.length,
                         itemBuilder: (context, index) => CartItemList(
-                          item: controller.cartItems[index],
+                          item: cartService.cartItems[index],
                           index: index,
                         ).animate(delay: (100 * index).ms).fade().slideX(
                               duration: 300.ms,

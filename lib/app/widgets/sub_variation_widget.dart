@@ -37,7 +37,8 @@ class SubVariationWidget extends StatelessWidget {
               choiceItems: C2Choice.listFrom<int, dynamic>(
                 source: controller.subVariations[index]['values'].toList(),
                 value: (i, v) => v["id"],
-                label: (i, v) => v['name'],
+                label: (i, v) =>
+                    v['name'] + (v['price'] != 0 ? " - Rs. ${v['price']}" : ''),
                 tooltip: (i, v) => v['name'],
               ),
               choiceCheckmark: true,

@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:grocery_app/app/data/models/product_model.dart';
 import 'package:grocery_app/app/modules/products/controllers/products_controller.dart';
 import 'package:grocery_app/app/modules/product_details/controllers/product_details_controller.dart';
+import 'package:grocery_app/app/services/cart_service.dart';
 import '../../cart/controllers/cart_controller.dart';
 
 class BaseController extends GetxController {
   ProductsController productsController = Get.put(ProductsController());
+  final CartService cartService = Get.find<CartService>();
   // current screen index
   int currentIndex = 2;
 
@@ -40,12 +42,16 @@ class BaseController extends GetxController {
   }
 
   /// when the user press on add + icon
-  onIncreasePressed(int productId) {
+  onIncreasePressed(int productId, int totalAmount) {
     var selectedvariation =
         Get.find<ProductDetailsController>().selectedVariation;
     var selectedSubVariation =
         Get.find<ProductDetailsController>().selectedSubVariation;
     var selectedaddons = Get.find<ProductDetailsController>().selectedAddon;
+    if (selectedvariation.length > 0) {
+      selectedvariation[0] = {"selectedSubVariation": selectedSubVariation};
+    }
+    // selectedvariation.add({"selectedSubVariation": selectedSubVariation});
     if (Get.find<CartController>()
         .products
         .where((element) => element.id == productId)
@@ -58,13 +64,28 @@ class BaseController extends GetxController {
       var product =
           productsController.products.firstWhere((p) => p.id == productId);
       Get.find<CartController>().products.add(product);
-      Get.find<CartController>().cartItems.add({
+
+      cartService.cartItems.add({
         "id": product.id,
         "name": product.name,
         "image": product.image,
         "description": product.description,
         "quantity": 1,
         "price": product.price,
+        "total_amount": totalAmount,
+        "variations": selectedvariation,
+        "subVariations": selectedSubVariation,
+        "addons": selectedaddons,
+      });
+
+      Get.put(CartService()).cartItems.add({
+        "id": product.id,
+        "name": product.name,
+        "image": product.image,
+        "description": product.description,
+        "quantity": 1,
+        "price": product.price,
+        "total_amount": totalAmount,
         "variations": selectedvariation,
         "subVariations": selectedSubVariation,
         "addons": selectedaddons,

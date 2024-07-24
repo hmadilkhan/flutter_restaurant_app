@@ -15,7 +15,6 @@ class CartItemList extends GetView<CartController> {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    print(item);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 0.w),
       child: Column(
@@ -23,20 +22,22 @@ class CartItemList extends GetView<CartController> {
         children: [
           ListTile(
             leading: Image.network(
-                "https://sabify.sabsoft.com.pk/api/website/image/${item["image"]}/prod",
+                "https://sabify.sabsoft.com.pk/api/website/image/${item.image}/prod",
                 width: 80.w,
                 height: 80.h),
-            title: Text(item["name"] ?? 'No Name',
+            title: Text(item.name ?? 'No Name',
                 style: theme.textTheme.headlineMedium),
             subtitle: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(6.0),
-                  child: Text(
-                    '${item["price"]} PKR',
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      color: theme.colorScheme.secondary,
+                  child: Obx(
+                    () => Text(
+                      '${item.amount} PKR',
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        color: theme.colorScheme.secondary,
+                      ),
                     ),
                   ),
                 ),
@@ -48,8 +49,8 @@ class CartItemList extends GetView<CartController> {
               ],
             ),
           ),
-          if (item['subVariations'] != null) ...{
-            for (int i = 0; i < item['subVariations'].length; i++) ...{
+          if (item.subVariations != null) ...{
+            for (int i = 0; i < item.subVariations.length; i++) ...{
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
                 child: Container(
@@ -63,7 +64,7 @@ class CartItemList extends GetView<CartController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        item['subVariations'][i]["name"],
+                        item.subVariations[i]["name"].toString(),
                         style: theme.textTheme.headlineSmall?.copyWith(
                             color: Colors.white,
                             backgroundColor: theme.primaryColor),
@@ -84,13 +85,13 @@ class CartItemList extends GetView<CartController> {
                     // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        item['subVariations'][i]["values"]['name'],
+                        item.subVariations[i]["values"]['name'],
                         style: theme.textTheme.headlineSmall?.copyWith(
                           color: theme.colorScheme.secondary,
                         ),
                       ),
                       Text(
-                        "PKR ${item['subVariations'][i]["values"]['price'].toString()}",
+                        "PKR ${item.subVariations[i]["values"]['price'].toString()}",
                         style: theme.textTheme.headlineSmall?.copyWith(
                           color: theme.colorScheme.secondary,
                         ),
@@ -101,8 +102,8 @@ class CartItemList extends GetView<CartController> {
               )
             },
           },
-          if (item['addons'] != null) ...{
-            for (int i = 0; i < item['addons'].length; i++) ...{
+          if (item.addons != null) ...{
+            for (int i = 0; i < item.addons.length; i++) ...{
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
                 child: Container(
@@ -116,7 +117,7 @@ class CartItemList extends GetView<CartController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        item['addons'][i]["name"],
+                        item.addons[i]["name"],
                         style: theme.textTheme.headlineSmall?.copyWith(
                             color: Colors.white,
                             backgroundColor: theme.primaryColor),
@@ -136,13 +137,13 @@ class CartItemList extends GetView<CartController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        item['addons'][i]["values"]['name'],
+                        item.addons[i]["values"]['name'],
                         style: theme.textTheme.headlineSmall?.copyWith(
                           color: theme.colorScheme.secondary,
                         ),
                       ),
                       Text(
-                        "PKR ${item['subVariations'][i]["values"]['price'].toString()}",
+                        "PKR ${item.subVariations[i]["values"]['price'].toString()}",
                         style: theme.textTheme.headlineSmall?.copyWith(
                           color: theme.colorScheme.secondary,
                         ),

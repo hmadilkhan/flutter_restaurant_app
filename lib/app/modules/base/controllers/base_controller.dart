@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_app/app/data/models/cart_model.dart';
 import 'package:grocery_app/app/data/models/product_model.dart';
 import 'package:grocery_app/app/modules/products/controllers/products_controller.dart';
 import 'package:grocery_app/app/modules/product_details/controllers/product_details_controller.dart';
@@ -8,12 +9,13 @@ import '../../cart/controllers/cart_controller.dart';
 
 class BaseController extends GetxController {
   ProductsController productsController = Get.put(ProductsController());
+  CartController cartController = Get.put(CartController());
   final CartService cartService = Get.find<CartService>();
   // current screen index
   int currentIndex = 2;
 
   // to count the number of products in the cart
-  int cartItemsCount = 0;
+  int? cartItemsCount = 0;
 
   @override
   void onInit() {
@@ -34,10 +36,13 @@ class BaseController extends GetxController {
   }
 
   /// calculate the number of products in the cart
-  getCartItemsCount() {
-    var products = Get.find<CartController>().products;
+  getCartItemsCount() async {
+    // var products = Get.find<CartController>().products;
+    // var products = cartService.cartItems;
     // cartItemsCount = products.fold<int>(0, (p, c) => p + c.quantity);
-    cartItemsCount = products.length;
+    cartItemsCount = await cartController.lengthCartItems();
+    await cartController.loadCartItems();
+    print("Base Controller : ${cartItemsCount}");
     update(['CartBadge']);
   }
 
@@ -48,7 +53,7 @@ class BaseController extends GetxController {
     var selectedSubVariation =
         Get.find<ProductDetailsController>().selectedSubVariation;
     var selectedaddons = Get.find<ProductDetailsController>().selectedAddon;
-    if (selectedvariation.length > 0) {
+    if (selectedvariation.isNotEmpty) {
       selectedvariation[0] = {"selectedSubVariation": selectedSubVariation};
     }
     // selectedvariation.add({"selectedSubVariation": selectedSubVariation});
@@ -65,20 +70,30 @@ class BaseController extends GetxController {
           productsController.products.firstWhere((p) => p.id == productId);
       Get.find<CartController>().products.add(product);
 
-      cartService.cartItems.add({
-        "id": product.id,
-        "name": product.name,
-        "image": product.image,
-        "description": product.description,
-        "quantity": 1,
-        "price": product.price,
-        "total_amount": totalAmount,
-        "variations": selectedvariation,
-        "subVariations": selectedSubVariation,
-        "addons": selectedaddons,
-      });
+      // cartController.cartItemsModel.add(CartItem(
+      //     id: product.id,
+      //     name: product.name,
+      //     quantity: 1,
+      //     price: product.price,
+      //     description: product.description,
+      //     image: product.image,
+      //     totalAmount: totalAmount,
+      //     variations: selectedSubVariation,
+      //     subVariations: selectedSubVariation,
+      //     addons: selectedaddons));
+      cartController.addToCart(CartItem(
+          id: product.id,
+          name: product.name,
+          quantity: 1,
+          price: totalAmount,
+          description: product.description,
+          image: product.image,
+          totalAmount: totalAmount,
+          variations: selectedSubVariation,
+          subVariations: selectedSubVariation,
+          addons: selectedaddons));
 
-      Get.put(CartService()).cartItems.add({
+      cartService.cartItems.add({
         "id": product.id,
         "name": product.name,
         "image": product.image,
@@ -95,7 +110,8 @@ class BaseController extends GetxController {
     if (Get.isRegistered<CartController>()) {
       Get.find<CartController>().getCartProducts();
     }
-    print(Get.find<CartController>().cartItems);
+    // print(Get.find<CartController>().cartItems);
+    print("Cart Items : ${cartController.cartItemsModel.length}");
     update(['ProductQuantity']);
   }
 

@@ -20,7 +20,7 @@ class CartView extends GetView<CartController> {
   Widget build(BuildContext context) {
     final theme = context.theme;
     final CartService cartService = Get.find<CartService>();
-    print("Cart Items : ${cartService.cartItems.length}");
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -55,16 +55,16 @@ class CartView extends GetView<CartController> {
             children: [
               24.verticalSpace,
               Expanded(
-                child: cartService.cartItems.isEmpty
+                child: controller.cartItems.isEmpty
                     ? const NoData(text: 'No Products in Your Cart Yet!')
                     : ListView.separated(
                         separatorBuilder: (_, index) => Padding(
                           padding: EdgeInsets.only(top: 12.h, bottom: 24.h),
                           child: const Divider(thickness: 1),
                         ),
-                        itemCount: cartService.cartItems.length,
+                        itemCount: controller.cartItems.length,
                         itemBuilder: (context, index) => CartItemList(
-                          item: cartService.cartItems[index],
+                          item: controller.cartItems[index],
                           index: index,
                         ).animate(delay: (100 * index).ms).fade().slideX(
                               duration: 300.ms,

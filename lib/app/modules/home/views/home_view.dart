@@ -204,7 +204,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                       16.verticalSpace,
                       SizedBox(
-                        height: 100,
+                        height: MediaQuery.of(context).size.height * 0.13,
                         child: FutureBuilder(
                           future: controller.downloadAllData(),
                           builder: (context, snapshot) {

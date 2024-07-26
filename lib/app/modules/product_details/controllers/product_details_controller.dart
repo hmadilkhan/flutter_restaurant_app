@@ -66,6 +66,7 @@ class ProductDetailsController extends GetxController {
     addonPrices = [];
     subvariationPrices = [];
     originalPrice.value = product.price;
+    price.value = product.price;
     // Initializing Variation List
     variationService.initializeVariationList();
     addonService.initializeAddons(product);

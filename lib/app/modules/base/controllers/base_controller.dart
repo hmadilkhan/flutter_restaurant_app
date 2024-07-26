@@ -37,12 +37,8 @@ class BaseController extends GetxController {
 
   /// calculate the number of products in the cart
   getCartItemsCount() async {
-    // var products = Get.find<CartController>().products;
-    // var products = cartService.cartItems;
-    // cartItemsCount = products.fold<int>(0, (p, c) => p + c.quantity);
     cartItemsCount = await cartController.lengthCartItems();
     await cartController.loadCartItems();
-    print("Base Controller : ${cartItemsCount}");
     update(['CartBadge']);
   }
 
@@ -56,16 +52,27 @@ class BaseController extends GetxController {
     if (selectedvariation.isNotEmpty) {
       selectedvariation[0] = {"selectedSubVariation": selectedSubVariation};
     }
-    // selectedvariation.add({"selectedSubVariation": selectedSubVariation});
+    // if (Get.find<CartController>()
+    //     .products
+    //     .where((element) => element.id == productId)
+    //     .isNotEmpty) {
+    //   var cartproduct = Get.find<CartController>()
+    //       .products
+    //       .firstWhere((p) => p.id == productId);
+    //   cartproduct.quantity++;
+    //   print("IF $cartproduct");
+    // } else {
     if (Get.find<CartController>()
-        .products
+        .cartItems
         .where((element) => element.id == productId)
         .isNotEmpty) {
       var cartproduct = Get.find<CartController>()
-          .products
+          .cartItems
           .firstWhere((p) => p.id == productId);
-      cartproduct.quantity++;
+      cartController.increaseQuantity(cartproduct);
+      print("Product Exists");
     } else {
+      print("Product does not Exist");
       var product =
           productsController.products.firstWhere((p) => p.id == productId);
       Get.find<CartController>().products.add(product);
@@ -110,8 +117,6 @@ class BaseController extends GetxController {
     if (Get.isRegistered<CartController>()) {
       Get.find<CartController>().getCartProducts();
     }
-    // print(Get.find<CartController>().cartItems);
-    print("Cart Items : ${cartController.cartItemsModel.length}");
     update(['ProductQuantity']);
   }
 

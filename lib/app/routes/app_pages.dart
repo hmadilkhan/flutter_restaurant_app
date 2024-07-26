@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:grocery_app/app/modules/checkout/bindings/checkout_binding.dart';
+import 'package:grocery_app/app/modules/checkout/views/checkout_view.dart';
 import 'package:grocery_app/app/modules/login/bindings/login_binding.dart';
 import 'package:grocery_app/app/modules/login/views/login_view.dart';
 import 'package:grocery_app/app/modules/otp/binding/otp_binding.dart';
@@ -94,6 +96,11 @@ class AppPages {
       name: _Paths.PRODUCTS,
       page: () => const ProductsView(),
       binding: ProductsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHECKOUT,
+      page: () => const CheckoutView(),
+      binding: CheckoutBinding(),
     ),
   ];
 }

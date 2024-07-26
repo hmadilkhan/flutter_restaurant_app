@@ -62,7 +62,7 @@ class MySharedPref {
       _sharedPreferences.setBool(_isLogin, isAuth);
 
   /// get generated fcm token
-  static bool? getIsAuth() => _sharedPreferences.getBool(_isLogin) ?? true;
+  static bool? getIsAuth() => _sharedPreferences.getBool(_isLogin) ?? false;
 
   /// save user name
   static Future<void> setUserName(String name) =>

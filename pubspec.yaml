@@ -26,6 +26,8 @@ dependencies:
   chips_choice: ^3.0.1
   otp_pin_field: ^1.2.8
   pinput: ^5.0.0
+  intl: ^0.19.0
+  ionicons: ^0.2.2
 
 dev_dependencies:
   mockito:

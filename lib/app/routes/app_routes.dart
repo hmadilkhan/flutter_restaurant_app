@@ -15,6 +15,7 @@ abstract class Routes {
   static const CALENDAR = _Paths.CALENDAR;
   static const PROFILE = _Paths.PROFILE;
   static const PRODUCTS = _Paths.PRODUCTS;
+  static const CHECKOUT = _Paths.CHECKOUT;
 }
 
 abstract class _Paths {
@@ -31,4 +32,5 @@ abstract class _Paths {
   static const CALENDAR = '/calendar';
   static const PROFILE = '/profile';
   static const PRODUCTS = '/products';
+  static const CHECKOUT = '/checkout';
 }

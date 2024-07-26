@@ -18,18 +18,13 @@ class ProductCartCount extends GetView<BaseController> {
   Widget build(BuildContext context) {
     final theme = context.theme;
     final CartController cartController = CartController();
-    var quantity = 0;
     return Row(
       children: [
         CustomIconButton(
           width: 36.w,
           height: 36.h,
           onPressed: () => {
-            //controller.onDecreasePressed(product.id ?? 0)
-            // quantity = item.quantity - 1,
-            cartController.decreaseQuantity(item),
-            print("Decrease $quantity"),
-            // cartController.updateQuantity(item, quantity)
+            cartController.decreaseQuantity(item, context),
           },
           icon: SvgPicture.asset(
             Constants.removeIcon,
@@ -42,8 +37,6 @@ class ProductCartCount extends GetView<BaseController> {
           id: 'ProductQuantity',
           builder: (baseController) => Obx(
             () => Text(
-              // product.quantity.toString(),
-              // baseController.getProductCountFromCart(product.id).toString(),
               item.quantity.value.toString(),
               style: theme.textTheme.headlineMedium,
             ),
@@ -54,12 +47,8 @@ class ProductCartCount extends GetView<BaseController> {
           width: 36.w,
           height: 36.h,
           onPressed: () => {
-            // quantity = item.quantity + 1,
             cartController.increaseQuantity(item),
-            print("Increase $quantity"),
-            // cartController.updateQuantity(item, quantity)
-          }, //controller.onIncreasePressed(product.id ?? 0),
-          // onPressed: () => {},
+          },
           icon: SvgPicture.asset(
             Constants.addIcon,
             fit: BoxFit.none,

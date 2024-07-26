@@ -17,7 +17,7 @@ class CartItem extends GetView<CartController> {
   Widget build(BuildContext context) {
     final theme = context.theme;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 0.w),
+      padding: EdgeInsets.only(top: 5),
       child: ListTile(
         leading: Image.network(
             "https://sabify.sabsoft.com.pk/api/website/image/${product.image}/prod",

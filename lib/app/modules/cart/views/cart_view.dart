@@ -22,10 +22,14 @@ class CartView extends GetView<CartController> {
     final CartService cartService = Get.find<CartService>();
 
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 238, 236, 236),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Padding(
+        backgroundColor: theme.scaffoldBackgroundColor,
+        title: Container(
           padding: EdgeInsets.symmetric(horizontal: 8.w),
+          width: double.infinity,
+          decoration: BoxDecoration(color: theme.scaffoldBackgroundColor),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -40,60 +44,100 @@ class CartView extends GetView<CartController> {
                 ),
               ),
               Text('Cart 🛒', style: theme.textTheme.displaySmall),
-              const Opacity(
-                opacity: 0.0,
-                child: CustomIconButton(onPressed: null, icon: Center()),
-              ),
+              CustomIconButton(
+                  backgroundColor: theme.scaffoldBackgroundColor,
+                  borderColor: theme.dividerColor,
+                  onPressed: () {
+                    controller.clearAllCart(context);
+                  },
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.red,
+                  )),
             ],
           ),
         ),
       ),
       body: GetBuilder<CartController>(
         builder: (_) => Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              24.verticalSpace,
-              Expanded(
-                child: controller.cartItems.isEmpty
-                    ? const NoData(text: 'No Products in Your Cart Yet!')
-                    : ListView.separated(
-                        separatorBuilder: (_, index) => Padding(
-                          padding: EdgeInsets.only(top: 12.h, bottom: 24.h),
-                          child: const Divider(thickness: 1),
-                        ),
-                        itemCount: controller.cartItems.length,
-                        itemBuilder: (context, index) => CartItemList(
-                          item: controller.cartItems[index],
-                          index: index,
-                        ).animate(delay: (100 * index).ms).fade().slideX(
-                              duration: 300.ms,
-                              begin: -1,
-                              curve: Curves.easeInSine,
+          padding: EdgeInsets.only(right: 6.w, left: 6.w),
+          child: Obx(
+            () => Column(
+              children: [
+                12.verticalSpace,
+                Expanded(
+                  child: controller.cartItems.isEmpty
+                      ? const NoData(text: 'No Products in Your Cart Yet!')
+                      : Container(
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 238, 236, 236),
+                          ),
+                          child: Obx(
+                            () => Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: ListView.separated(
+                                separatorBuilder: (_, index) => Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 5.h, bottom: 5.h),
+                                  child: const Divider(
+                                    thickness: 15,
+                                    color: Color.fromARGB(255, 238, 236, 236),
+                                  ),
+                                ),
+                                itemCount: controller.cartItems.length,
+                                itemBuilder: (context, index) => Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 5.w),
+                                  decoration: BoxDecoration(
+                                      color: theme.scaffoldBackgroundColor,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: CartItemList(
+                                    item: controller.cartItems[index],
+                                    index: index,
+                                  )
+                                      .animate(delay: (100 * index).ms)
+                                      .fade()
+                                      .slideX(
+                                        duration: 300.ms,
+                                        begin: -1,
+                                        curve: Curves.easeInSine,
+                                      ),
+                                ),
+                              ),
                             ),
-                      ),
-              ),
-              30.verticalSpace,
-              Visibility(
-                visible: controller.products.isNotEmpty,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: CustomButton(
-                    text: 'Purchase Now',
-                    onPressed: () => controller.onPurchaseNowPressed(),
-                    fontSize: 16.sp,
-                    radius: 50.r,
-                    verticalPadding: 16.h,
-                    hasShadow: false,
-                  ).animate().fade().slideY(
-                        duration: 300.ms,
-                        begin: 1,
-                        curve: Curves.easeInSine,
-                      ),
+                          ),
+                        ),
                 ),
-              ),
-              30.verticalSpace,
-            ],
+                10.verticalSpace,
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 238, 236, 236)),
+                  child: Visibility(
+                    visible: controller.cartItems.isNotEmpty,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20.w,
+                      ),
+                      child: CustomButton(
+                        text: 'Checkout',
+                        onPressed: () => Get.offNamed(
+                            '/checkout'), //controller.onPurchaseNowPressed(),
+                        fontSize: 16.sp,
+                        radius: 50.r,
+                        verticalPadding: 16.h,
+                        hasShadow: false,
+                      ).animate().fade().slideY(
+                            duration: 300.ms,
+                            begin: 1,
+                            curve: Curves.easeInSine,
+                          ),
+                    ),
+                  ),
+                ),
+                // 30.verticalSpace,
+              ],
+            ),
           ),
         ),
       ),

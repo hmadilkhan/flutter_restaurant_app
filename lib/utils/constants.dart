@@ -10,6 +10,7 @@ class Constants {
   static const userIcon = 'assets/vectors/user.svg';
 
   static const backArrowIcon = 'assets/vectors/back_arrow.svg';
+  static const deleteIcon = 'assets/vectors/deleteIcon.svg';
   static const addIcon = 'assets/vectors/add.svg';
   static const removeIcon = 'assets/vectors/remove.svg';
   static const searchIcon = 'assets/vectors/search.svg';

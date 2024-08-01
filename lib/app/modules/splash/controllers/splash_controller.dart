@@ -7,7 +7,6 @@ class SplashController extends GetxController {
   @override
   void onInit() async {
     await Future.delayed(const Duration(seconds: 2));
-    print(MySharedPref.getIsAuth());
     if (MySharedPref.getIsAuth() == true) {
       Get.offNamed(Routes.BASE);
     } else {

@@ -18,7 +18,7 @@ class CheckoutAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomIconButton(
-            onPressed: () => Get.back(),
+            onPressed: () => Get.offNamed('cart'),
             backgroundColor: theme.scaffoldBackgroundColor,
             borderColor: theme.dividerColor,
             icon: SvgPicture.asset(

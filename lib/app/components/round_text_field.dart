@@ -12,6 +12,7 @@ class RoundTextfield extends StatelessWidget {
   final String? Function(String?)? validator;
   final String? Function(String)? onChanged;
   final String? Function(String?)? onSaved;
+  final int? maxLines;
   final String? errorText;
 
   const RoundTextfield({
@@ -26,6 +27,7 @@ class RoundTextfield extends StatelessWidget {
     this.onChanged,
     this.errorText,
     this.onSaved,
+    this.maxLines,
   });
 
   @override
@@ -53,6 +55,7 @@ class RoundTextfield extends StatelessWidget {
               validator: validator,
               onChanged: onChanged,
               onSaved: onSaved,
+              maxLines: maxLines,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                 enabledBorder: InputBorder.none,

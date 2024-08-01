@@ -4,22 +4,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:grocery_app/app/modules/cart/views/widgets/cart_items_list.dart';
-import 'package:grocery_app/app/services/cart_service.dart';
 
 import '../../../../utils/constants.dart';
 import '../../../components/custom_button.dart';
 import '../../../components/custom_icon_button.dart';
 import '../../../components/no_data.dart';
 import '../controllers/cart_controller.dart';
-import 'widgets/cart_item.dart';
 
 class CartView extends GetView<CartController> {
-  const CartView({Key? key}) : super(key: key);
+  const CartView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
-    final CartService cartService = Get.find<CartService>();
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 238, 236, 236),

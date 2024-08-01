@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:grocery_app/app/modules/cart/controllers/cart_controller.dart';
 
 import '../../utils/constants.dart';
-import '../data/models/product_model.dart';
 import '../modules/base/controllers/base_controller.dart';
 import 'custom_icon_button.dart';
 

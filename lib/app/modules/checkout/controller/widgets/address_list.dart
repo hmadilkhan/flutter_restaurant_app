@@ -11,15 +11,16 @@ class AddressList extends GetView<CheckoutController> {
         ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.35,
                 child: ListView.builder(
                   restorationId: 'addressListView',
                   itemCount: controller.addresses.length,
                   itemBuilder: (BuildContext context, int index) {
                     final item = controller.addresses[index];
                     return ListTile(
-                        title: Text(item.name),
-                        subtitle: Text(item.decsription),
+                        title: Text(item["landmark"]),
+                        subtitle: Text(item["address"]),
                         leading: const Icon(Icons.home),
                         onTap: () {});
                   },

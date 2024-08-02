@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_app/app/components/custom_snackbar.dart';
+import 'package:grocery_app/app/modules/checkout/controller/widgets/delivery_area_bottom_sheet.dart';
+import 'package:grocery_app/app/modules/checkout/controller/widgets/order_type_bottom_sheet.dart';
 import 'package:http/http.dart' as http;
 import 'package:grocery_app/app/data/local/storage_controller.dart';
 import 'package:grocery_app/app/modules/checkout/controller/widgets/address_bottom_sheet.dart';
@@ -18,11 +20,13 @@ class CheckoutController extends GetxController {
   RxString mode = "New Address".obs;
   RxBool isLoading = false.obs;
   int deliveryAreaId = 0;
-  String deliveryAreaName = "";
+  RxString deliveryAreaName = "No Area selected".obs;
   final formKey = GlobalKey<FormState>();
   var AreasList = [];
   List<String> areas = <String>[].obs;
   RxList addresses = [].obs;
+  RxString orderType = "Delivery".obs;
+  RxList ordersModes = ["Delivery", "Pickup"].obs;
 
   @override
   void onInit() {
@@ -45,10 +49,18 @@ class CheckoutController extends GetxController {
     Get.bottomSheet(const AddressBottomSheet());
   }
 
+  showOrderType(BuildContext context) {
+    Get.bottomSheet(const OrderTypeBottomSheet());
+  }
+
+  showDeliveryArea(BuildContext context) {
+    Get.bottomSheet(const DeliveryAreaBottomSheet());
+  }
+
   void onChangeDeliveryArea(value) {
     var item = AreasList.firstWhere((e) => e["name"] == value);
     deliveryAreaId = item["id"];
-    deliveryAreaName = value;
+    deliveryAreaName.value = value;
     // print(item["id"]);
     // print(value);
   }

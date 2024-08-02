@@ -11,17 +11,19 @@ class AddressList extends GetView<CheckoutController> {
         ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ListView.builder(
-                restorationId: 'addressListView',
-                itemCount: controller.addresses.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final item = controller.addresses[index];
-                  return ListTile(
-                      title: Text(item.name),
-                      subtitle: Text(item.decsription),
-                      leading: const Icon(Icons.home),
-                      onTap: () {});
-                },
+              Expanded(
+                child: ListView.builder(
+                  restorationId: 'addressListView',
+                  itemCount: controller.addresses.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final item = controller.addresses[index];
+                    return ListTile(
+                        title: Text(item.name),
+                        subtitle: Text(item.decsription),
+                        leading: const Icon(Icons.home),
+                        onTap: () {});
+                  },
+                ),
               ),
             ],
           )

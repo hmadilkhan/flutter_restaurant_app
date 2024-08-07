@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_app/app/modules/checkout/controller/checkout_controller.dart';
@@ -17,7 +18,7 @@ class DeliveryArea extends GetView<CheckoutController> {
             color: Colors.white,
           ),
           child: ListTile(
-            leading: const Icon(Icons.maps_home_work_outlined),
+            leading: const Icon(Icons.directions_bike_outlined),
             title: const Text("Select Your Delivery Area"),
             subtitle: Obx(() => Text(controller.deliveryAreaName.value)),
             trailing: GestureDetector(

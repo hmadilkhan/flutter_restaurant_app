@@ -152,7 +152,7 @@ class HomeView extends GetView<HomeController> {
                         width: double.infinity,
                         height: 158.h,
                         child: FutureBuilder(
-                            future: controller.downloadAllData(),
+                            future: controller.downloadSliders(),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 return CarouselSlider.builder(
@@ -170,7 +170,7 @@ class HomeView extends GetView<HomeController> {
                                     // return Image.asset(
                                     //     controller.cards[itemIndex]);
                                     return Image.network(
-                                        "https://sabify.sabsoft.com.pk/api/website/image/${controller.cards[itemIndex]}/slider/${ApiList.companyId}-${ApiList.websiteId}");
+                                        controller.cards[itemIndex]);
                                   },
                                 );
                               } else {

@@ -18,7 +18,9 @@ class CustomerAddress extends GetView<CheckoutController> {
             color: Colors.white,
           ),
           child: ListTile(
-            leading: const Icon(Icons.maps_home_work_outlined),
+            leading: const Icon(
+              Icons.person_search_outlined,
+            ),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -37,16 +39,20 @@ class CustomerAddress extends GetView<CheckoutController> {
                   style: theme.textTheme.labelLarge,
                 ),
                 Obx(
-                  () => Text(
-                    controller.address.toString(),
-                    style: const TextStyle(fontFamily: 'Cairo'),
-                  ),
+                  () => controller.orderType.value == "Delivery"
+                      ? Text(
+                          controller.address.value,
+                          style: const TextStyle(fontFamily: 'Cairo'),
+                        )
+                      : const Center(),
                 ),
               ],
             ),
             trailing: GestureDetector(
               onTap: () {
-                controller.showAddresses(context);
+                if (controller.orderType.value == "Delivery") {
+                  controller.showAddresses(context);
+                }
               },
               child: const Row(
                 mainAxisSize: MainAxisSize.min,

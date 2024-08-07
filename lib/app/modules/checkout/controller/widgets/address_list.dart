@@ -18,11 +18,15 @@ class AddressList extends GetView<CheckoutController> {
                   itemCount: controller.addresses.length,
                   itemBuilder: (BuildContext context, int index) {
                     final item = controller.addresses[index];
-                    return ListTile(
+                    return RadioListTile(
                         title: Text(item["landmark"]),
                         subtitle: Text(item["address"]),
-                        leading: const Icon(Icons.home),
-                        onTap: () {});
+                        // leading: const Icon(Icons.home),
+                        onChanged: (value) {
+                          controller.address.value = value["address"];
+                        },
+                        value: item,
+                        groupValue: controller.address);
                   },
                 ),
               ),

@@ -7,6 +7,7 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:grocery_app/app/data/local/storage_controller.dart';
 import 'package:grocery_app/app/data/models/cart_model.dart';
 import 'package:grocery_app/app/modules/products/controllers/products_controller.dart';
+import 'package:grocery_app/utils/api_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/dummy_helper.dart';
@@ -21,49 +22,84 @@ class CartController extends GetxController {
   RxList cartItems = <CartItem>[].obs;
   RxList completeOrder = [].obs;
   var cartItemsModel = <CartItem>[].obs;
-  var contact_details = [];
+  var contactDetails = [];
   var qty = [].obs;
   final StorageController storageController = Get.put(StorageController());
+  RxDouble totalCartAmount = 0.00.obs;
+  RxDouble subTotalCartAmount = 0.00.obs;
+  RxDouble deliveryCharges = 0.00.obs;
 
   final value = NumberFormat("#,##0", "en_US");
 
   @override
   void onInit() {
     super.onInit();
-    getCartProducts();
+    // getCartProducts();
     loadCartItems();
   }
 
   /// when the user press on purchase now button
-  onPurchaseNowPressed() {
+  onPurchaseNowPressed(address, landmark) async {
     // clearCart();
     // Get.back();
     // print("${cartItems}");
-    Map<String, dynamic> contactdetails = {
-      'fullName': storageController.readData('username'),
-      'email': '',
-      'phNumber': storageController.readData('phone'),
-      'fullAddress': '',
-      'landmark': '',
-      'instructions': '',
+    var items = await loadCartItemsForCart();
+
+    final data = {
+      "contact_details": {
+        "fullName": storageController.readData('username'),
+        "email": "",
+        "phNumber": storageController.readData('phone'),
+        "fullAddress": address,
+        "landmark": landmark,
+        "instructions": ""
+      },
+      "cart_data": {
+        "count": cartItems.length,
+        "cartItems": items,
+        "totalAmount": totalCartAmount.value,
+        "subtotal": subTotalCartAmount.value,
+        "area": "",
+        "deliveryCharges": deliveryCharges.value,
+        "orderAmount": 0,
+      },
+      "webId": ApiList.websiteId,
+      "companyId": ApiList.companyId,
+      "entireDiscountDetails": null,
+      "voucher": null
     };
 
-    Map<String, dynamic> cartData = {
-      'count': cartItems.length,
-      'cartItems': cartItems,
-      'totalAmount': storageController.readData('phone'),
-      'fullAddress': '',
-      'landmark': '',
-      'instructions': '',
-    };
+    print(jsonEncode(data));
 
-    Map<String, dynamic> contact_details = {
-      'contact_details': contactdetails,
-      'cart_data': cartItems,
-    };
+    // Map<String, dynamic> contactdetails = {
+    //   'fullName': storageController.readData('username'),
+    //   'email': '',
+    //   'phNumber': storageController.readData('phone'),
+    //   'fullAddress': '',
+    //   'landmark': '',
+    //   'instructions': '',
+    // };
 
-    completeOrder.add(contact_details);
+    // Map<String, dynamic> cartData = {
+    //   'count': cartItems.length,
+    //   'cartItems': jsonEncode(items),
+    //   'totalAmount': totalCartAmount.value,
+    //   'subtotal': subTotalCartAmount.value,
+    //   'area': '',
+    //   "deliveryCharges": deliveryCharges.value
+    // };
 
+    // Map<String, dynamic> completeArray = {
+    //   'contact_details': contactdetails,
+    //   'cart_data': cartData,
+    //   "webId": ApiList.websiteId,
+    //   "companyId": ApiList.companyId,
+    //   "entireDiscountDetails": null,
+    //   "voucher": null,
+    // };
+
+    // completeOrder.add(completeArray);
+    // print(completeOrder);
     CustomSnackBar.showCustomSnackBar(
         title: 'Purchased', message: 'Order placed with success');
   }
@@ -124,7 +160,22 @@ class CartController extends GetxController {
       cartItems.assignAll(cartItemsJson
           .map((item) => CartItem.fromJson(jsonDecode(item)))
           .toList());
+      calculateTotalAmount();
     }
+  }
+
+  Future<List<String>?> loadCartItemsForCart() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String>? cartItemsJson = prefs.getStringList('cart_items');
+    // print("Json $cartItemsJson");
+    return cartItemsJson;
+  }
+
+  calculateTotalAmount() {
+    subTotalCartAmount.value =
+        cartItems.fold(0, (sum, item) => sum + item.totalAmount);
+    totalCartAmount.value = subTotalCartAmount.value + deliveryCharges.value;
+    print("Total Cart : $totalCartAmount");
   }
 
   void increaseQuantity(CartItem item) {
@@ -182,7 +233,6 @@ class CartController extends GetxController {
         cartItems.refresh();
         int productindex =
             products.indexWhere((element) => element.id == item.id);
-        print("product index : $products");
         if (productindex != -1) {
           products.removeAt(productindex);
         }

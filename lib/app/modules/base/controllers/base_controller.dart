@@ -70,9 +70,7 @@ class BaseController extends GetxController {
           .cartItems
           .firstWhere((p) => p.id == productId);
       cartController.increaseQuantity(cartproduct);
-      print("Product Exists");
     } else {
-      print("Product does not Exist");
       var product =
           productsController.products.firstWhere((p) => p.id == productId);
       Get.find<CartController>().products.add(product);

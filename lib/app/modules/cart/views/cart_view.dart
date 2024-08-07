@@ -76,7 +76,7 @@ class CartView extends GetView<CartController> {
                               child: ListView.separated(
                                 separatorBuilder: (_, index) => Padding(
                                   padding:
-                                      EdgeInsets.only(top: 5.h, bottom: 5.h),
+                                      EdgeInsets.only(top: 0.h, bottom: 0.h),
                                   child: const Divider(
                                     thickness: 15,
                                     color: Color.fromARGB(255, 238, 236, 236),
@@ -87,7 +87,7 @@ class CartView extends GetView<CartController> {
                                   margin: EdgeInsets.symmetric(horizontal: 5.w),
                                   decoration: BoxDecoration(
                                       color: theme.scaffoldBackgroundColor,
-                                      borderRadius: BorderRadius.circular(20)),
+                                      borderRadius: BorderRadius.circular(10)),
                                   child: CartItemList(
                                     item: controller.cartItems[index],
                                     index: index,

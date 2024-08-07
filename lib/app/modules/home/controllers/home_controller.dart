@@ -14,6 +14,7 @@ class HomeController extends GetxController {
   // to hold categories & products
   List<CategoryModel> categories = [];
   List<ProductModel> products = [];
+  RxList branches = [].obs;
 
   // for app theme
   var isLightTheme = MySharedPref.getThemeIsLight();
@@ -72,22 +73,41 @@ class HomeController extends GetxController {
       });
       if (response.statusCode == 200) {
         categories = [];
-        cards = [];
         products = [];
         var result = jsonDecode(response.body);
         var departments = result['website']['getDeparts'];
-        var sliders = result['website']['sliders'];
+        branches.value = result['website']['branches'];
 
         for (var depart in departments) {
           categories.add(CategoryModel.fromJson(depart));
         }
-        for (var slide in sliders) {
-          cards.add(slide['slide']);
-        }
-
         return categories;
       } else {
         throw Exception('Failed to load departments');
+      }
+    } catch (e) {
+      return e;
+    }
+  }
+
+  Future<Object?>? downloadSliders() async {
+    try {
+      final uri = Uri.parse(ApiList.getSliders);
+      final response = await http.get(uri, headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      });
+      if (response.statusCode == 200) {
+        cards = [];
+        var result = jsonDecode(response.body);
+        var sliders = result;
+
+        for (var slide in sliders["data"]) {
+          cards.add(slide['slide']);
+        }
+        return cards;
+      } else {
+        throw Exception('Failed to load sliders');
       }
     } catch (e) {
       return e;

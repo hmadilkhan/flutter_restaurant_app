@@ -13,7 +13,7 @@ class Delivery extends GetView<CheckoutController> {
         ? const Column(
             children: [
               DeliveryArea(),
-              CustomerAddress(),
+              // CustomerAddress(),
             ],
           )
         : const Center());

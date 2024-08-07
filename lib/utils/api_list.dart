@@ -3,6 +3,7 @@ class ApiList {
   static int? websiteId = 25;
   static int? companyId = 92;
   static String getAllData = "${baseUrl!}/api/website/get-detail/$websiteId";
+  static String getSliders = "${baseUrl!}/api/website/slider/mobile/$websiteId";
   static String login = "${baseUrl!}/api/website/customer-login";
   static String verifyOtp = "${baseUrl!}/api/website/verify-otp";
   static String getCustomerAddresses =

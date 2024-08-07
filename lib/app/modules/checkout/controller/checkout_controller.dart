@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_app/app/components/custom_snackbar.dart';
+import 'package:grocery_app/app/modules/cart/controllers/cart_controller.dart';
 import 'package:grocery_app/app/modules/checkout/controller/widgets/delivery_area_bottom_sheet.dart';
 import 'package:grocery_app/app/modules/checkout/controller/widgets/order_type_bottom_sheet.dart';
+import 'package:grocery_app/app/modules/checkout/controller/widgets/pickup_location_bottom_sheet.dart';
 import 'package:http/http.dart' as http;
 import 'package:grocery_app/app/data/local/storage_controller.dart';
 import 'package:grocery_app/app/modules/checkout/controller/widgets/address_bottom_sheet.dart';
@@ -12,21 +14,30 @@ import 'package:grocery_app/utils/api_list.dart';
 
 class CheckoutController extends GetxController {
   final StorageController storageController = Get.put(StorageController());
+  final cartController = Get.put(CartController());
+
+  // Form State to validate User Input
+  final formKey = GlobalKey<FormState>();
+
+  List<String> areas = <String>[].obs; // Areas list
+  RxList addresses = [].obs; // get all addresses from API
+  RxList ordersModes = ["Delivery", "Pickup"].obs; // Array for order type
+
   String? username = "";
   String? mobile = "";
   String? txtaddress = "";
   String? txtlandmark = "";
-  RxString? address = "No address found".obs;
+  RxString address = "No address found".obs;
   RxString mode = "New Address".obs;
   RxBool isLoading = false.obs;
   int deliveryAreaId = 0;
   RxString deliveryAreaName = "No Area selected".obs;
-  final formKey = GlobalKey<FormState>();
+  int pickupBranchId = 0;
+  RxString pickupBranchName = "No branch selected".obs;
+  RxString pickupBranchAddress = "".obs;
+  RxString orderType = "Delivery".obs; // user selected order type
+
   var AreasList = [];
-  List<String> areas = <String>[].obs;
-  RxList addresses = [].obs;
-  RxString orderType = "Delivery".obs;
-  RxList ordersModes = ["Delivery", "Pickup"].obs;
 
   @override
   void onInit() {
@@ -57,12 +68,70 @@ class CheckoutController extends GetxController {
     Get.bottomSheet(const DeliveryAreaBottomSheet());
   }
 
+  showPickupLocations(BuildContext context) {
+    Get.bottomSheet(const PickupLocationBottomSheet());
+  }
+
+  void changeOrderType(value) {
+    if (value == "Pickup") {
+      cartController.deliveryCharges.value = 0.00;
+      deliveryAreaName.value = "No Address Selected";
+      cartController.calculateTotalAmount();
+    }
+    orderType.value = value;
+    Get.back();
+  }
+
+  void changePickupBranch(item) {
+    pickupBranchId = item["branch_id"];
+    pickupBranchName.value = item["branch_name"];
+    pickupBranchAddress.value = item["branch_address"];
+    Get.back();
+  }
+
   void onChangeDeliveryArea(value) {
     var item = AreasList.firstWhere((e) => e["name"] == value);
     deliveryAreaId = item["id"];
     deliveryAreaName.value = value;
-    // print(item["id"]);
-    // print(value);
+    cartController.deliveryCharges.value =
+        double.parse(item["delivery_amount"].toString());
+    cartController.calculateTotalAmount();
+    Get.back();
+  }
+
+  void placeOrder() {
+    cartController.onPurchaseNowPressed(address.value, "landmark");
+    //  Map<String, dynamic> contactdetails = {
+    //     'fullName': storageController.readData('username'),
+    //     'email': '',
+    //     'phNumber': storageController.readData('phone'),
+    //     'fullAddress': '',
+    //     'landmark': '',
+    //     'instructions': '',
+    //   };
+
+    //   Map<String, dynamic> cartData = {
+    //     'count': cartController.cartItems.length,
+    //     'cartItems': cartController.cartItems,
+    //     'totalAmount': cartController.totalCartAmount.value,
+    //     'subtotal': cartController.subTotalCartAmount.value,
+    //     'area': '',
+    //     "deliveryCharges" :''
+    //   };
+
+    //   Map<String, dynamic> contactDetails = {
+    //     'contact_details': contactdetails,
+    //     'cart_data': cartData,
+    //     "webId": ApiList.websiteId,
+    //     "companyId": ApiList.companyId,
+    //     "entireDiscountDetails": null,
+    //     "voucher": null,
+    //   };
+
+    //   cartController.completeOrder.add(contactDetails);
+    //   print(cartController.completeOrder);
+    //   CustomSnackBar.showCustomSnackBar(
+    //       title: 'Purchased', message: 'Order placed with success');
   }
 
   String? fieldValidator(String value) {
@@ -73,11 +142,8 @@ class CheckoutController extends GetxController {
   }
 
   saveAddress() {
-    // isLoading.value = false;
     final isValid = formKey.currentState!.validate();
-    // Get.focusScope!.unfocus();
     if (isValid) {
-      // print("Address : $txtaddress and Landmark : $txtlandmark");
       saveCustomerAddress();
     }
   }
@@ -121,7 +187,6 @@ class CheckoutController extends GetxController {
       final response = await http.post(uri, body: body);
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
-        print("Getting Addresses : $result");
         addresses.value = result["addresses"];
         isLoading.value = false;
         return result;

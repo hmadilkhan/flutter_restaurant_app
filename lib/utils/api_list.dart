@@ -6,6 +6,7 @@ class ApiList {
   static String getSliders = "${baseUrl!}/api/website/slider/mobile/$websiteId";
   static String login = "${baseUrl!}/api/website/customer-login";
   static String verifyOtp = "${baseUrl!}/api/website/verify-otp";
+  static String placeOrder = "${baseUrl!}/api/website/generate-order";
   static String getCustomerAddresses =
       "${baseUrl!}/api/website/get-customer-record";
   static String saveCustomerAddress =

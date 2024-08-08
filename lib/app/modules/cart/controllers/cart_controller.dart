@@ -15,6 +15,7 @@ import '../../../components/custom_snackbar.dart';
 import '../../../data/models/product_model.dart';
 import '../../base/controllers/base_controller.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class CartController extends GetxController {
   // to hold the products in cart
@@ -48,15 +49,16 @@ class CartController extends GetxController {
     final data = {
       "contact_details": {
         "fullName": storageController.readData('username'),
-        "email": "",
+        "email": null,
         "phNumber": storageController.readData('phone'),
         "fullAddress": address,
         "landmark": landmark,
-        "instructions": ""
+        "instructions": null
       },
       "cart_data": {
         "count": cartItems.length,
         "cartItems": items,
+        "deliveryArea": {},
         "totalAmount": totalCartAmount.value,
         "subtotal": subTotalCartAmount.value,
         "area": "",
@@ -69,39 +71,36 @@ class CartController extends GetxController {
       "voucher": null
     };
 
-    print(jsonEncode(data));
+    // print(jsonEncode(data));
 
-    // Map<String, dynamic> contactdetails = {
-    //   'fullName': storageController.readData('username'),
-    //   'email': '',
-    //   'phNumber': storageController.readData('phone'),
-    //   'fullAddress': '',
-    //   'landmark': '',
-    //   'instructions': '',
-    // };
+    await placeOrderOnServer(address, landmark, data);
 
-    // Map<String, dynamic> cartData = {
-    //   'count': cartItems.length,
-    //   'cartItems': jsonEncode(items),
-    //   'totalAmount': totalCartAmount.value,
-    //   'subtotal': subTotalCartAmount.value,
-    //   'area': '',
-    //   "deliveryCharges": deliveryCharges.value
-    // };
-
-    // Map<String, dynamic> completeArray = {
-    //   'contact_details': contactdetails,
-    //   'cart_data': cartData,
-    //   "webId": ApiList.websiteId,
-    //   "companyId": ApiList.companyId,
-    //   "entireDiscountDetails": null,
-    //   "voucher": null,
-    // };
-
-    // completeOrder.add(completeArray);
-    // print(completeOrder);
     CustomSnackBar.showCustomSnackBar(
         title: 'Purchased', message: 'Order placed with success');
+  }
+
+  Future<Object?>? placeOrderOnServer(address, landmark, completeArray) async {
+    try {
+      final uri = Uri.parse(ApiList.placeOrder);
+
+      final response = await http.post(uri,
+          headers: {
+            "content-type": "application/json",
+          },
+          body: jsonEncode(completeArray));
+      print("Response Body : ${response.body}");
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        return response.body;
+      } else {
+        print("Error");
+        throw Exception('Failed to load departments');
+      }
+    } catch (e) {
+      print("Error $e");
+      return e;
+    }
   }
 
   /// get the cart products from the product list

@@ -91,6 +91,17 @@ class CheckoutController extends GetxController {
 
   void onChangeDeliveryArea(value) {
     var item = AreasList.firstWhere((e) => e["name"] == value);
+    // Recieved
+    print(item);
+    // {id: 15, branch_id: 248, city_id: 1, name: Aram Bagh, longitude: null, latitude: null, delivery_time: null, delivery_amount: 70, min_order: 250}
+    // Required;
+//     deliveryArea = {
+// cityId : 1
+// branchId : 17
+// areaName : "mahmodabad"
+// areaId : 71
+// type : "delivery"
+// minOrder : 450 }
     deliveryAreaId = item["id"];
     deliveryAreaName.value = value;
     cartController.deliveryCharges.value =
@@ -101,37 +112,6 @@ class CheckoutController extends GetxController {
 
   void placeOrder() {
     cartController.onPurchaseNowPressed(address.value, "landmark");
-    //  Map<String, dynamic> contactdetails = {
-    //     'fullName': storageController.readData('username'),
-    //     'email': '',
-    //     'phNumber': storageController.readData('phone'),
-    //     'fullAddress': '',
-    //     'landmark': '',
-    //     'instructions': '',
-    //   };
-
-    //   Map<String, dynamic> cartData = {
-    //     'count': cartController.cartItems.length,
-    //     'cartItems': cartController.cartItems,
-    //     'totalAmount': cartController.totalCartAmount.value,
-    //     'subtotal': cartController.subTotalCartAmount.value,
-    //     'area': '',
-    //     "deliveryCharges" :''
-    //   };
-
-    //   Map<String, dynamic> contactDetails = {
-    //     'contact_details': contactdetails,
-    //     'cart_data': cartData,
-    //     "webId": ApiList.websiteId,
-    //     "companyId": ApiList.companyId,
-    //     "entireDiscountDetails": null,
-    //     "voucher": null,
-    //   };
-
-    //   cartController.completeOrder.add(contactDetails);
-    //   print(cartController.completeOrder);
-    //   CustomSnackBar.showCustomSnackBar(
-    //       title: 'Purchased', message: 'Order placed with success');
   }
 
   String? fieldValidator(String value) {

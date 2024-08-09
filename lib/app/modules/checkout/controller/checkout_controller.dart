@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_app/app/components/custom_snackbar.dart';
+import 'package:grocery_app/app/data/models/cart_model.dart';
 import 'package:grocery_app/app/modules/cart/controllers/cart_controller.dart';
 import 'package:grocery_app/app/modules/checkout/controller/widgets/delivery_area_bottom_sheet.dart';
 import 'package:grocery_app/app/modules/checkout/controller/widgets/order_type_bottom_sheet.dart';
@@ -11,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'package:grocery_app/app/data/local/storage_controller.dart';
 import 'package:grocery_app/app/modules/checkout/controller/widgets/address_bottom_sheet.dart';
 import 'package:grocery_app/utils/api_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckoutController extends GetxController {
   final StorageController storageController = Get.put(StorageController());
@@ -22,12 +24,14 @@ class CheckoutController extends GetxController {
   List<String> areas = <String>[].obs; // Areas list
   RxList addresses = [].obs; // get all addresses from API
   RxList ordersModes = ["Delivery", "Pickup"].obs; // Array for order type
+  RxList cartItems = <CartItem>[].obs;
 
   String? username = "";
   String? mobile = "";
   String? txtaddress = "";
   String? txtlandmark = "";
   RxString address = "No address found".obs;
+  RxString landmark = "No landmark found".obs;
   RxString mode = "New Address".obs;
   RxBool isLoading = false.obs;
   int deliveryAreaId = 0;
@@ -36,8 +40,8 @@ class CheckoutController extends GetxController {
   RxString pickupBranchName = "No branch selected".obs;
   RxString pickupBranchAddress = "".obs;
   RxString orderType = "Delivery".obs; // user selected order type
-
-  var AreasList = [];
+  var deliveryArea = {};
+  var areaList = [];
 
   @override
   void onInit() {
@@ -90,9 +94,9 @@ class CheckoutController extends GetxController {
   }
 
   void onChangeDeliveryArea(value) {
-    var item = AreasList.firstWhere((e) => e["name"] == value);
+    var item = areaList.firstWhere((e) => e["name"] == value);
     // Recieved
-    print(item);
+    // print(item);
     // {id: 15, branch_id: 248, city_id: 1, name: Aram Bagh, longitude: null, latitude: null, delivery_time: null, delivery_amount: 70, min_order: 250}
     // Required;
 //     deliveryArea = {
@@ -102,6 +106,13 @@ class CheckoutController extends GetxController {
 // areaId : 71
 // type : "delivery"
 // minOrder : 450 }
+    deliveryArea["cityId"] = item["city_id"];
+    deliveryArea["branchId"] = item["branch_id"];
+    deliveryArea["areaName"] = item["name"];
+    deliveryArea["areaId"] = item["id"];
+    deliveryArea["type"] = orderType.value;
+    deliveryArea["minOrder"] = item["min_order"];
+    print(deliveryArea);
     deliveryAreaId = item["id"];
     deliveryAreaName.value = value;
     cartController.deliveryCharges.value =
@@ -111,7 +122,7 @@ class CheckoutController extends GetxController {
   }
 
   void placeOrder() {
-    cartController.onPurchaseNowPressed(address.value, "landmark");
+    onPurchaseNowPressed(address.value, landmark.value);
   }
 
   String? fieldValidator(String value) {
@@ -139,7 +150,7 @@ class CheckoutController extends GetxController {
       if (response.statusCode == 200) {
         var result = jsonDecode(response.body);
         var locations = result['website']['locations'];
-        AreasList = locations;
+        areaList = locations;
         for (var location in locations) {
           areas.add(location["name"]);
         }
@@ -208,6 +219,84 @@ class CheckoutController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       print(e);
+    }
+  }
+
+  onPurchaseNowPressed(address, landmark) async {
+    // clearCart();
+    // Get.back();
+    // print("${cartItems}");
+    var items = await loadCartItemsForCart();
+
+    final data = {
+      "contact_details": {
+        "fullName": storageController.readData('username'),
+        "email": null,
+        "phNumber": storageController.readData('phone'),
+        "fullAddress": address,
+        "landmark": landmark,
+        "instructions": null
+      },
+      "cart_data": {
+        "count": cartController.cartItems.length,
+        "cartItems": items,
+        "deliveryArea": deliveryArea,
+        "totalAmount": cartController.totalCartAmount.value,
+        "subtotal": cartController.subTotalCartAmount.value,
+        "area": "",
+        "deliveryCharges": cartController.deliveryCharges.value,
+        "orderAmount": 0,
+      },
+      "webId": ApiList.websiteId,
+      "companyId": ApiList.companyId,
+      "entireDiscountDetails": null,
+      "voucher": null
+    };
+
+    // print(jsonEncode(data));
+
+    await placeOrderOnServer(address, landmark, data);
+
+    CustomSnackBar.showCustomSnackBar(
+        title: 'Purchased', message: 'Order placed with success');
+  }
+
+  Future<List<CartItem>> loadCartItemsForCart() async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String>? cartItemsJson = prefs.getStringList('cart_items');
+    // print("Json $cartItemsJson");
+    if (cartItemsJson == null) {
+      return []; // Return an empty list if no cart items are found
+    }
+    List<CartItem> cartItems = cartItemsJson.map((item) {
+      Map<String, dynamic> itemMap = json.decode(item);
+      return CartItem.fromJson(itemMap);
+    }).toList();
+    print(json.encode(cartItems));
+    return cartItems;
+  }
+
+  Future<Object?>? placeOrderOnServer(address, landmark, completeArray) async {
+    try {
+      final uri = Uri.parse(ApiList.placeOrder);
+
+      final response = await http.post(uri,
+          headers: {
+            "content-type": "application/json",
+          },
+          body: jsonEncode(completeArray));
+      print("Response Body : ${response.body}");
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        return response.body;
+      } else {
+        print("Error");
+        throw Exception('Failed to load departments');
+      }
+    } catch (e) {
+      print("Error $e");
+      return e;
     }
   }
 }

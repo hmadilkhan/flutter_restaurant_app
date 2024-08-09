@@ -252,6 +252,7 @@ class CartController extends GetxController {
   }
 
   showBottomDialog(BuildContext context, dynamic item) {
+    print(item.addons);
     Get.bottomSheet(Container(
       padding: const EdgeInsets.all(8.0),
       width: MediaQuery.of(context).size.width * 0.95,

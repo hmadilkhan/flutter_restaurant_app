@@ -24,6 +24,8 @@ class AddressList extends GetView<CheckoutController> {
                         // leading: const Icon(Icons.home),
                         onChanged: (value) {
                           controller.address.value = value["address"];
+                          controller.landmark.value = value["landmark"];
+                          print(controller.landmark.value);
                         },
                         value: item,
                         groupValue: controller.address);

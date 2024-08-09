@@ -20,7 +20,7 @@ class BottomView extends GetView<CheckoutController> {
               const Text("Total Amount : ",
                   style: TextStyle(fontSize: 15, color: Colors.black)),
               Text(
-                  "Rs. ${Get.find<CartController>().subTotalCartAmount.toStringAsFixed(2)}",
+                  "Rs. ${Get.find<CartController>().totalCartAmount.toStringAsFixed(2)}",
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

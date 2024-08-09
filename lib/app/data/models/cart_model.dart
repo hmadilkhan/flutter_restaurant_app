@@ -33,12 +33,12 @@ class CartItem {
       name: json['name'],
       quantity: json['quantity'],
       price: json['price'],
-      totalAmount: json['total_amount'],
+      totalAmount: json['totalAmount'],
       description: json['description'],
       image: json['image'],
       variations: json['variations'],
       subVariations: json['subVariations'],
-      addons: json['addons'],
+      addons: json['selectedAddons'],
     );
   }
 
@@ -48,12 +48,12 @@ class CartItem {
       'name': name,
       'quantity': quantity.value,
       'price': price,
-      'total_amount': totalAmount,
+      'totalAmount': totalAmount,
       'description': description,
       'image': image,
-      'variations': variations,
+      'selectedVariation': variations,
       'subVariations': subVariations,
-      'addons': addons,
+      'selectedAddons': addons,
     };
   }
 }

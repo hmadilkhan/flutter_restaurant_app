@@ -17,4 +17,12 @@ class SubvariationValue {
     name = json["name"];
     price = json["price"];
   }
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "product_id": productId,
+      "name": name,
+      "price": price,
+    };
+  }
 }

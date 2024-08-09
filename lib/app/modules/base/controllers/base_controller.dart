@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/app/data/models/cart_model.dart';
 import 'package:grocery_app/app/data/models/product_model.dart';
+import 'package:grocery_app/app/data/models/variation_model.dart';
 import 'package:grocery_app/app/modules/products/controllers/products_controller.dart';
 import 'package:grocery_app/app/modules/product_details/controllers/product_details_controller.dart';
 import 'package:grocery_app/app/services/cart_service.dart';
@@ -49,9 +50,10 @@ class BaseController extends GetxController {
     var selectedSubVariation =
         Get.find<ProductDetailsController>().selectedSubVariation;
     var selectedaddons = Get.find<ProductDetailsController>().selectedAddon;
-    if (selectedvariation.isNotEmpty) {
-      selectedvariation[0] = {"selectedSubVariation": selectedSubVariation};
-    }
+    // if (selectedvariation.isNotEmpty) {
+    //   selectedvariation[0] = {"selectedSubVariation": selectedSubVariation};
+    // }
+    print(selectedaddons);
     // if (Get.find<CartController>()
     //     .products
     //     .where((element) => element.id == productId)
@@ -75,17 +77,6 @@ class BaseController extends GetxController {
           productsController.products.firstWhere((p) => p.id == productId);
       Get.find<CartController>().products.add(product);
 
-      // cartController.cartItemsModel.add(CartItem(
-      //     id: product.id,
-      //     name: product.name,
-      //     quantity: 1,
-      //     price: product.price,
-      //     description: product.description,
-      //     image: product.image,
-      //     totalAmount: totalAmount,
-      //     variations: selectedSubVariation,
-      //     subVariations: selectedSubVariation,
-      //     addons: selectedaddons));
       cartController.addToCart(CartItem(
           id: product.id,
           name: product.name,
@@ -94,22 +85,23 @@ class BaseController extends GetxController {
           description: product.description,
           image: product.image,
           totalAmount: totalAmount,
-          variations: selectedSubVariation,
+          variations: selectedvariation,
           subVariations: selectedSubVariation,
           addons: selectedaddons));
 
-      cartService.cartItems.add({
-        "id": product.id,
-        "name": product.name,
-        "image": product.image,
-        "description": product.description,
-        "quantity": 1,
-        "price": product.price,
-        "total_amount": totalAmount,
-        "variations": selectedvariation,
-        "subVariations": selectedSubVariation,
-        "addons": selectedaddons,
-      });
+      // cartService.cartItems.add({
+      //   "id": product.id,
+      //   "name": product.name,
+      //   "image": product.image,
+      //   "description": product.description,
+      //   "quantity": 1,
+      //   "price": product.price,
+      //   "totalAmount": totalAmount,
+      //   "instructions": null,
+      //   "variations": selectedvariation,
+      //   "subVariations": selectedSubVariation,
+      //   "addons": selectedaddons,
+      // });
     }
     getCartItemsCount();
     if (Get.isRegistered<CartController>()) {

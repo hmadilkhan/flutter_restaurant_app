@@ -35,4 +35,15 @@ class Subvariation {
     values = List<SubvariationValue>.from(
         json['values'].map((x) => SubvariationValue.fromJson(x)));
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'prodID': prodId,
+      'id': id,
+      'name': name,
+      'required_status': name,
+      'type': requiredStatus,
+      'values': values?.map((x) => x.toJson()).toList(),
+    };
+  }
 }

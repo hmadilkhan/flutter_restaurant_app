@@ -1,4 +1,5 @@
 import 'package:grocery_app/app/data/models/addon_model.dart';
+import 'package:grocery_app/app/data/models/deal_model.dart';
 import 'package:grocery_app/app/data/models/variation_model.dart';
 
 class ProductModel {
@@ -11,6 +12,7 @@ class ProductModel {
   int? categoryId;
   List<VariationModel>? variations;
   List<AddonModel>? addons;
+  List<DealModel>? deals;
 
   ProductModel(
       {required this.id,
@@ -21,7 +23,8 @@ class ProductModel {
       required this.description,
       required this.categoryId,
       required this.variations,
-      required this.addons});
+      required this.addons,
+      required this.deals});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -35,5 +38,7 @@ class ProductModel {
         json['variations'].map((x) => VariationModel.fromJson(x)));
     addons = List<AddonModel>.from(
         json['addons'].map((x) => AddonModel.fromJson(x)));
+    deals =
+        List<DealModel>.from(json['deals'].map((x) => DealModel.fromJson(x)));
   }
 }

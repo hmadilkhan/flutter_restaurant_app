@@ -5,8 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:grocery_app/app/modules/product_details/components/Addon.dart';
+import 'package:grocery_app/app/modules/product_details/components/deal_variation.dart';
 import 'package:grocery_app/app/modules/product_details/components/sub_variation.dart';
 import 'package:grocery_app/app/data/models/variation_model.dart';
+import 'package:grocery_app/app/widgets/deal_widget.dart';
 import 'package:grocery_app/app/widgets/variation_widget.dart';
 
 import '../../../../utils/constants.dart';
@@ -113,6 +115,7 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
             10.verticalSpace,
             const VariationWidget(),
             SubVariation(controller: controller),
+            DealVariation(controller: controller),
             const Addon(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -130,42 +133,6 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                   ),
             ),
             30.verticalSpace,
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 24.w),
-            //   child: SizedBox(
-            //     width: double.infinity,
-            //     height: 200.h,
-            //     child: ListView.builder(
-            //         scrollDirection: Axis.horizontal,
-            //         physics: const ClampingScrollPhysics(),
-            //         shrinkWrap: true,
-            //         itemCount: controller.product.variations?.length,
-            //         itemBuilder: (context, index) {
-            //           var name = controller.product.variations?[index].name;
-            //           return Obx(() => Padding(
-            //                 padding: const EdgeInsets.all(4.0),
-            //                 child: ChoiceChip(
-            //                   label: Text(name ?? ''),
-            //                   selectedColor: theme.primaryColor,
-            //                   checkmarkColor: theme.scaffoldBackgroundColor,
-            //                   labelPadding: const EdgeInsets.all(5.0),
-            //                   labelStyle: TextStyle(
-            //                       fontSize: 16,
-            //                       color:
-            //                           (controller.selectedIndex.value == index
-            //                               ? Colors.white
-            //                               : Colors.black)),
-            //                   selected: controller.selectedIndex.value == index,
-            //                   backgroundColor: Colors.white,
-            //                   showCheckmark: true,
-            //                   onSelected: (bool selected) {
-            //                     controller.getSelectionChange(index);
-            //                   },
-            //                 ),
-            //               ));
-            //         }),
-            //   ),
-            // ),
           ],
         ),
       ),

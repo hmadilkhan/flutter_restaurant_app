@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:grocery_app/app/modules/product_details/services/addon_service.dart';
+import 'package:grocery_app/app/modules/product_details/services/deals_service.dart';
 import 'package:grocery_app/app/modules/product_details/services/sub_variation_service.dart';
 import 'package:grocery_app/app/modules/product_details/services/variation_service.dart';
 import '../../../data/models/product_model.dart';
@@ -14,9 +15,11 @@ class ProductDetailsController extends GetxController {
   RxInt price = 0.obs;
   RxList tagVariation = [].obs;
   RxList tagAddons = [].obs;
+  RxList tagDeals = [].obs;
   RxList variations = [].obs;
   RxList addons = [].obs;
   RxList subVariations = [].obs;
+  RxList deals = [].obs;
   var addonPrices = [];
   var subvariationPrices = [];
   var selectedVariation = [];
@@ -25,6 +28,7 @@ class ProductDetailsController extends GetxController {
   late AddonService addonService;
   late SubVariationService subVariationService;
   late VariationService variationService;
+  late DealsService dealsService;
 
   @override
   void onInit() {
@@ -32,6 +36,7 @@ class ProductDetailsController extends GetxController {
     variationService = VariationService(this);
     subVariationService = SubVariationService(this);
     addonService = AddonService(this);
+    dealsService = DealsService(this);
     initializeLists(product);
   }
 
@@ -62,14 +67,20 @@ class ProductDetailsController extends GetxController {
     update();
   }
 
+  dealSelection(index) {
+    print(index);
+  }
+
   initializeLists(product) {
     addonPrices = [];
     subvariationPrices = [];
     originalPrice.value = product.price;
     price.value = product.price;
+
     // Initializing Variation List
     variationService.initializeVariationList();
     addonService.initializeAddons(product);
+    dealsService.initializeDeals(product);
   }
 
   getSubVariation(subvariation, index, value) {

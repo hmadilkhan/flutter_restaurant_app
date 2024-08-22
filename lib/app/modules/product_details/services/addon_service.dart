@@ -9,6 +9,7 @@ class AddonService {
   initializeAddons(product) {
     if (product.addons != null) {
       productDetail.tagAddons.clear();
+      print("${product}");
       for (var i = 0; i < product.addons.length; i++) {
         productDetail.tagAddons.add(0);
       }
@@ -43,7 +44,7 @@ class AddonService {
         "id": addon["id"],
         "name": addon["name"],
         "values":
-            addon["values"].firstWhere((element) => element["id"] == value)
+            addon["values"].where((element) => element["id"] == value).toList()
       });
     }
   }
@@ -51,7 +52,7 @@ class AddonService {
   calculateAddonPrice(addon, index, value) {
     var addonPrice =
         addon["values"].firstWhere((element) => element["id"] == value);
-
+    print("Addon Price : $addonPrice");
     if (index >= 0 && index < productDetail.addonPrices.length) {
       productDetail.addonPrices[index] = addonPrice['price'];
     } else {

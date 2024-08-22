@@ -18,8 +18,10 @@ class SubVariationService {
         "id": subvariation["id"],
         "name": subvariation["name"],
         "values": subvariation["values"]
-            .firstWhere((element) => element["id"] == value)
+            .where((element) => element["id"] == value)
+            .toList()
       });
+      print("Add : ${productDetail.selectedSubVariation}");
     }
     productDetail.tagVariation[index] = value;
   }
@@ -29,12 +31,14 @@ class SubVariationService {
       productDetail.subVariations.add({
         "id": variation.id,
         "name": variation.name,
-        "values": variation.values?.map((subvariation) => {
-              "id": subvariation.id,
-              "product_id": subvariation.productId,
-              "name": subvariation.name,
-              "price": subvariation.price
-            })
+        "values": variation.values
+            ?.map((subvariation) => {
+                  "id": subvariation.id,
+                  "product_id": subvariation.productId,
+                  "name": subvariation.name,
+                  "price": subvariation.price,
+                })
+            .toList(), // Convert the map result to a List
       });
     }
   }
@@ -42,14 +46,14 @@ class SubVariationService {
   calculateSubVariationPrice(subvariation, index, value) {
     var subVariationPrice = productDetail.selectedSubVariation
         .firstWhereOrNull((element) => element["id"] == subvariation["id"]);
-
+    print("Price : ${subVariationPrice['values']}");
     // if (subVariationPrice['values']['price'] != null) {
     if (index >= 0 && index < productDetail.subvariationPrices.length) {
       productDetail.subvariationPrices[index] =
           subVariationPrice['values']['price'] ?? 0;
     } else {
       productDetail.subvariationPrices
-          .insert(index, (subVariationPrice['values']['price'] ?? 0));
+          .insert(index, (subVariationPrice['values'][0]['price'] ?? 0));
     }
     productDetail.price.value = productDetail.originalPrice.value +
         (productDetail.addonPrices.isNotEmpty

@@ -252,7 +252,6 @@ class CartController extends GetxController {
   }
 
   showBottomDialog(BuildContext context, dynamic item) {
-    print(item.addons);
     Get.bottomSheet(Container(
       padding: const EdgeInsets.all(8.0),
       width: MediaQuery.of(context).size.width * 0.95,
@@ -385,6 +384,62 @@ class CartController extends GetxController {
                   ),
                 )
               },
+            },
+            if (item.deals != null) ...{
+              for (int i = 0; i < item.deals.length; i++) ...{
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        color: context.theme.primaryColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.deals[i]["name"].toString(),
+                          style: context.theme.textTheme.headlineSmall
+                              ?.copyWith(
+                                  color: Colors.white,
+                                  backgroundColor: context.theme.primaryColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.w,
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          item.deals[i]["values"][0]['name'],
+                          style:
+                              context.theme.textTheme.headlineSmall?.copyWith(
+                            color: context.theme.colorScheme.secondary,
+                          ),
+                        ),
+                        // Text(
+                        //   "PKR ${item.deals[i]["values"]['price'].toString()}",
+                        //   style:
+                        //       context.theme.textTheme.headlineSmall?.copyWith(
+                        //     color: context.theme.colorScheme.secondary,
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                )
+              }
             },
             const SizedBox(height: 10.0),
           ],

@@ -49,7 +49,6 @@ class ProductsController extends GetxController {
         var result = jsonDecode(response.body);
         var jsonproducts = result['website']['products'];
         for (var product in jsonproducts) {
-          // print(ProductModel.fromJson(product));
           products.add(ProductModel.fromJson(product));
         }
         return products;

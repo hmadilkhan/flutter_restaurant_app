@@ -10,6 +10,7 @@ class CartItem {
   String? image;
   dynamic variations;
   dynamic subVariations;
+  dynamic deals;
   dynamic addons;
 
   CartItem({
@@ -23,6 +24,7 @@ class CartItem {
     required this.variations,
     required this.subVariations,
     required this.addons,
+    required this.deals,
   }) : quantity = quantity.obs;
 
   int get amount => quantity.value * price!;
@@ -36,9 +38,10 @@ class CartItem {
       totalAmount: json['totalAmount'],
       description: json['description'],
       image: json['image'],
-      variations: json['variations'],
+      variations: json['selectedVariation'],
       subVariations: json['subVariations'],
       addons: json['selectedAddons'],
+      deals: json['selectedDeals'],
     );
   }
 
@@ -54,6 +57,7 @@ class CartItem {
       'selectedVariation': variations,
       'subVariations': subVariations,
       'selectedAddons': addons,
+      'selectedDeals': deals,
     };
   }
 }

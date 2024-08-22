@@ -19,12 +19,12 @@ class BottomView extends GetView<CheckoutController> {
             children: [
               const Text("Total Amount : ",
                   style: TextStyle(fontSize: 15, color: Colors.black)),
-              Text(
+              Obx(() => Text(
                   "Rs. ${Get.find<CartController>().totalCartAmount.toStringAsFixed(2)}",
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: theme.primaryColor)),
+                      color: theme.primaryColor))),
             ],
           ),
           ElevatedButton(

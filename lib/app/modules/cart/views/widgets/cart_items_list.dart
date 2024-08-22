@@ -51,7 +51,7 @@ class CartItemList extends GetView<CartController> {
                     print(json.encode(item));
                     controller.showBottomDialog(context, item);
                   },
-                  child: !item.subVariations.isEmpty
+                  child: !item.subVariations.isEmpty || !item.deals.isEmpty
                       ? Row(
                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

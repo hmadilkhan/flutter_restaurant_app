@@ -249,6 +249,7 @@ class CheckoutController extends GetxController {
       },
       "webId": ApiList.websiteId,
       "companyId": ApiList.companyId,
+      "operator": "android",
       "entireDiscountDetails": null,
       "voucher": null
     };
@@ -264,7 +265,7 @@ class CheckoutController extends GetxController {
   Future<List<CartItem>> loadCartItemsForCart() async {
     final prefs = await SharedPreferences.getInstance();
     List<String>? cartItemsJson = prefs.getStringList('cart_items');
-    // print("Json $cartItemsJson");
+    print("Json $cartItemsJson");
     if (cartItemsJson == null) {
       return []; // Return an empty list if no cart items are found
     }

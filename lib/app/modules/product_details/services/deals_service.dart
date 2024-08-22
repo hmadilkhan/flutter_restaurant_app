@@ -7,7 +7,7 @@ class DealsService {
   DealsService(this.productDetail);
 
   initializeDeals(product) {
-    if (product.deals != null) {
+    if (product.deals.length > 0) {
       productDetail.tagAddons.clear();
       for (var i = 0; i < product.deals.length; i++) {
         productDetail.tagDeals.add(0);
@@ -24,26 +24,38 @@ class DealsService {
                 "id": addonValue.id,
                 "product_id": addonValue.productId,
                 "name": addonValue.name,
+                "addons": addonValue.addons,
               })
         });
       }
     }
   }
 
-  checkAddonSelectedOrNot(addon, index, value) {
-    var checkAddon = productDetail.selectedAddon
-        .firstWhereOrNull((element) => element["id"] == addon["id"]);
-
-    if (checkAddon != null) {
-      checkAddon["values"] =
-          addon["values"].firstWhere((element) => element["id"] == value);
+  checkDealSelectedOrNot(deals, index, value) {
+    var checkDeal = productDetail.selectedDeals
+        .firstWhereOrNull((element) => element["id"] == deals["id"]);
+    if (checkDeal != null) {
+      checkDeal["values"] =
+          deals["values"].firstWhere((element) => element["id"] == value);
     } else {
-      productDetail.selectedAddon.add({
-        "id": addon["id"],
-        "name": addon["name"],
-        "values":
-            addon["values"].firstWhere((element) => element["id"] == value)
+      var dealValue =
+          deals["values"].firstWhere((element) => element["id"] == value);
+      // print(dealValue['id']);
+      productDetail.selectedDealsValues.add({
+        "id": dealValue['id'],
+        "product_id": dealValue['product_id'],
+        "name": dealValue['name'],
+        "addons": []
       });
+      productDetail.selectedDeals.add({
+        "id": deals["id"],
+        "name": deals["name"],
+        // "values":
+        //     deals["values"].where((element) => element["id"] == value).toList(),
+        "values": productDetail.selectedDealsValues
+        // "addons": [],
+      });
+      print(" Deal Added ${productDetail.selectedDeals}");
     }
   }
 

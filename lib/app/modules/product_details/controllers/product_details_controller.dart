@@ -20,11 +20,14 @@ class ProductDetailsController extends GetxController {
   RxList addons = [].obs;
   RxList subVariations = [].obs;
   RxList deals = [].obs;
+  List<dynamic> variationAddons = [].obs;
   var addonPrices = [];
   var subvariationPrices = [];
   var selectedVariation = [];
   var selectedSubVariation = [];
   var selectedAddon = [];
+  var selectedDeals = [];
+  var selectedDealsValues = [];
   late AddonService addonService;
   late SubVariationService subVariationService;
   late VariationService variationService;
@@ -67,8 +70,9 @@ class ProductDetailsController extends GetxController {
     update();
   }
 
-  dealSelection(index) {
-    print(index);
+  dealSelection(deals, index, value) {
+    tagDeals[index] = value;
+    dealsService.checkDealSelectedOrNot(deals, index, value);
   }
 
   initializeLists(product) {

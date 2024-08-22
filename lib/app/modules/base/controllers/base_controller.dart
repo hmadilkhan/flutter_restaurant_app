@@ -50,10 +50,11 @@ class BaseController extends GetxController {
     var selectedSubVariation =
         Get.find<ProductDetailsController>().selectedSubVariation;
     var selectedaddons = Get.find<ProductDetailsController>().selectedAddon;
+    var selectedDeals = Get.find<ProductDetailsController>().selectedDeals;
     // if (selectedvariation.isNotEmpty) {
     //   selectedvariation[0] = {"selectedSubVariation": selectedSubVariation};
     // }
-    print(selectedaddons);
+    print(selectedDeals);
     // if (Get.find<CartController>()
     //     .products
     //     .where((element) => element.id == productId)
@@ -85,9 +86,11 @@ class BaseController extends GetxController {
           description: product.description,
           image: product.image,
           totalAmount: totalAmount,
-          variations: selectedvariation,
+          variations:
+              (selectedvariation.isNotEmpty ? selectedvariation[0] : null),
           subVariations: selectedSubVariation,
-          addons: selectedaddons));
+          addons: selectedaddons,
+          deals: selectedDeals));
 
       // cartService.cartItems.add({
       //   "id": product.id,

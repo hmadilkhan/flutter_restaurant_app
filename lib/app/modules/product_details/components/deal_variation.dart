@@ -11,17 +11,14 @@ class DealVariation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ProductDetailsController>(builder: (controller) {
-      return Obx(() => controller.deals.isNotEmpty
+      return controller.deals.isNotEmpty
           ? Column(
-              // mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (int i = 0; i < controller.deals.length; i++) ...{
-                  DealWidget(index: i)
-                }
-              ],
+              children: List.generate(controller.deals.length, (i) {
+                return DealWidget(index: i);
+              }),
             )
-          : const Center());
+          : const Center();
     });
   }
 }

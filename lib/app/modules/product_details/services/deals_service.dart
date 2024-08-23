@@ -41,19 +41,19 @@ class DealsService {
       var dealValue =
           deals["values"].firstWhere((element) => element["id"] == value);
       // print(dealValue['id']);
+      // productDetail.selectedDealsValues.clear();
       productDetail.selectedDealsValues.add({
         "id": dealValue['id'],
         "product_id": dealValue['product_id'],
         "name": dealValue['name'],
-        "addons": []
+        "addons": [],
+        "parentId": deals["id"],
       });
       productDetail.selectedDeals.add({
         "id": deals["id"],
         "name": deals["name"],
-        // "values":
-        //     deals["values"].where((element) => element["id"] == value).toList(),
         "values": productDetail.selectedDealsValues
-        // "addons": [],
+            .where((e) => e["parentId"] == deals["id"])
       });
       print(" Deal Added ${productDetail.selectedDeals}");
     }

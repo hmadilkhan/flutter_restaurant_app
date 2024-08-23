@@ -9,7 +9,6 @@ class AddonService {
   initializeAddons(product) {
     if (product.addons != null) {
       productDetail.tagAddons.clear();
-      print("${product}");
       for (var i = 0; i < product.addons.length; i++) {
         productDetail.tagAddons.add(0);
       }

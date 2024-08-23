@@ -6,28 +6,38 @@ import 'package:get/get.dart';
 import 'package:grocery_app/app/modules/product_details/controllers/product_details_controller.dart';
 
 class DealAddon extends StatefulWidget {
-  final index;
-  final deal;
-  const DealAddon({super.key, this.index, this.deal});
+  final int index;
+  final int variationId;
+  final dynamic addon;
+  final dynamic deal;
+  final int mainId;
+  const DealAddon(
+      {super.key,
+      required this.index,
+      this.addon,
+      required this.variationId,
+      required this.mainId,
+      this.deal});
 
   @override
   State<DealAddon> createState() => _DealAddonState();
 }
 
 class _DealAddonState extends State<DealAddon> {
+  int tag = 0;
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
     final controller = Get.put(ProductDetailsController());
-    print(widget.deal);
+    print(widget.mainId);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        widget.deal.isNotEmpty
+        widget.addon.isNotEmpty
             ? Padding(
                 padding: EdgeInsets.only(left: 15.w, top: 0),
                 child: Text(
-                  'Addons',
+                  '${widget.addon["name"]} (Addons)',
                   style: theme.textTheme.displaySmall,
                 ).animate().fade().slideX(
                       duration: 300.ms,
@@ -36,17 +46,24 @@ class _DealAddonState extends State<DealAddon> {
                     ),
               )
             : const Center(),
-        widget.deal.isNotEmpty
+        widget.addon.isNotEmpty
             ? Padding(
                 padding: EdgeInsets.only(left: 0.w, right: 15.w),
                 child: ChipsChoice<dynamic>.single(
-                  value: controller.tagDeals[widget.index],
+                  value: tag,
                   onChanged: (val) {
-                    controller.dealSelection(
-                        controller.deals[widget.index], widget.index, val);
+                    controller.dealAddonSelection(
+                        widget.addon,
+                        widget.addon["id"],
+                        val,
+                        widget.variationId,
+                        widget.deal);
+                    setState(() {
+                      tag = val;
+                    });
                   },
                   choiceItems: C2Choice.listFrom<int, dynamic>(
-                    source: widget.deal[0]['values'].toList(),
+                    source: widget.addon['values'].toList(),
                     value: (i, v) => v['id'],
                     label: (i, v) => (v['name'] ?? 'No Name'),
                     tooltip: (i, v) => (v['name'] ?? 'No Name'),

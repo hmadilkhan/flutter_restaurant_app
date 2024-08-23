@@ -13,6 +13,13 @@ class DealWidget extends GetView<ProductDetailsController> {
   @override
   Widget build(BuildContext context) {
     final theme = context.theme;
+    var mainId = 0;
+    List<dynamic> variationAddons;
+    final Map<String, dynamic> data = controller.deals[index];
+    // Ensure that 'values' is treated as a List
+    List<dynamic> valuesList = (data['values'] as Iterable).toList();
+    // Accessing the addons  list from the first element in 'values'
+    variationAddons = (valuesList[0]['addons'] as Iterable).toList();
     return GetBuilder<ProductDetailsController>(builder: (controller) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,19 +45,9 @@ class DealWidget extends GetView<ProductDetailsController> {
                     padding: EdgeInsets.only(left: 0.w, right: 15.w),
                     child: ChipsChoice<dynamic>.single(
                       value: controller.tagDeals[index],
-                      onChanged: (val) {
+                      onChanged: (val) => {
                         controller.dealSelection(
-                            controller.deals[index], index, val);
-                        final Map<String, dynamic> data =
-                            controller.deals[index];
-                        // Ensure that 'values' is treated as a List
-                        List<dynamic> valuesList =
-                            (data['values'] as Iterable).toList();
-                        // Accessing the addons  list from the first element in 'values'
-                        controller.variationAddons =
-                            (valuesList[0]['addons'] as Iterable).toList();
-
-                        print(controller.variationAddons);
+                            controller.deals[index], index, val),
                       },
                       choiceItems: C2Choice.listFrom<int, dynamic>(
                         source: controller.deals[index]['values'].toList(),
@@ -74,53 +71,17 @@ class DealWidget extends GetView<ProductDetailsController> {
                   )
                 : const Center(),
           ),
-          DealAddon(index: index, deal: controller.variationAddons),
-          // Obx(
-          //   () => controller.variationAddons.isNotEmpty
-          //       ? Padding(
-          //           padding: EdgeInsets.only(left: 15.w, top: 0),
-          //           child: Text(
-          //             'Addons',
-          //             style: theme.textTheme.displaySmall,
-          //           ).animate().fade().slideX(
-          //                 duration: 300.ms,
-          //                 begin: -1,
-          //                 curve: Curves.easeInSine,
-          //               ),
-          //         )
-          //       : const Center(),
-          // ),
-          // Obx(
-          //   () => controller.variationAddons.isNotEmpty
-          //       ? Padding(
-          //           padding: EdgeInsets.only(left: 0.w, right: 15.w),
-          //           child: ChipsChoice<dynamic>.single(
-          //             value: controller.tagDeals[index],
-          //             onChanged: (val) {
-          //               controller.dealSelection(
-          //                   controller.deals[index], index, val);
-          //             },
-          //             choiceItems: C2Choice.listFrom<int, dynamic>(
-          //               source: controller.deals[index]['values'].toList(),
-          //               value: (i, v) => v['id'],
-          //               label: (i, v) => (v['name'] ?? 'No Name'),
-          //               tooltip: (i, v) => (v['name'] ?? 'No Name'),
-          //             ),
-          //             choiceCheckmark: true,
-          //             choiceStyle: C2ChipStyle.filled(
-          //               height: 30,
-          //               foregroundStyle: const TextStyle(fontSize: 15),
-          //               selectedStyle: C2ChipStyle(
-          //                 borderRadius: const BorderRadius.all(
-          //                   Radius.circular(15),
-          //                 ),
-          //                 backgroundColor: theme.primaryColor,
-          //               ),
-          //             ),
-          //           ),
-          //         )
-          //       : const Center(),
-          // ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(variationAddons.length, (i) {
+              return DealAddon(
+                  index: index,
+                  addon: variationAddons[i],
+                  variationId: controller.deals[index]['id'],
+                  deal: controller.deals[index]['values'],
+                  mainId: mainId);
+            }),
+          ),
           const Divider(
             indent: 15,
             endIndent: 15,
